@@ -1,0 +1,132 @@
+* {
+  font-family: "Poppins";
+  padding: 0;
+  margin: 0;
+}
+
+/* Navbar Section */
+.left-image {
+  height: 3rem;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+.middle-button {
+  display: flex;
+  list-style-type: none;
+  gap: 4rem;
+  margin: 0;
+  padding: 0;
+}
+
+.middle-button li {
+  position: relative;
+  cursor: pointer;
+  color: #34478c;
+  font-weight: bold;
+  font-size: 20px;
+}
+.middle-button a {
+  color: #34478c;
+}
+.middle-button a::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  height: 0.175rem;
+  background: #1a3050;
+}
+.middle-button li a::after {
+  transform: scale(0, 1);
+  transition: transform 0.3s ease;
+}
+.middle-button li a:hover:after {
+  transform: scale(1, 1);
+}
+.middle-button a {
+  text-decoration: none;
+}
+.right-section {
+  display: flex;
+  gap: 20px;
+}
+.right-section button {
+  background-color: #1a3050;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 25px;
+  transition: all 0.5s;
+}
+.right-section button:hover {
+  background-color: white;
+  color: #34478c;
+  box-shadow: 0px 0px 2px -3px #34478c, 0px 0px 16px -3px #34478c;
+}
+
+.dropdown-section p {
+  font-weight: bold;
+  color: #34478c;
+}
+.dropdown-section img {
+  height: 2.5rem;
+}
+.nav-link {
+  color: #34478c;
+}
+.custom-dropdown .dropdown-toggle::after {
+  color: #34478c;
+}
+.user-text {
+  transition: all 1s;
+}
+.user-text:hover {
+  text-decoration: underline;
+}
+/* Navbar Section */
+
+/* Sidebar Section */
+
+.sidebar h2 {
+  color: #34478c;
+}
+.sidebar-link {
+  text-decoration: none;
+  position: relative;
+  color: inherit;
+}
+
+.sidebar-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px; /* Change this to make the underline bolder */
+  background-color: #34478c; /* Change this to your desired underline color */
+  transition: width 0.3s; /* Animation duration */
+}
+
+.sidebar-link:hover::after {
+  width: 100%;
+}
+
+/* Sidebar Section */
+/* button */
+button {
+  border-radius: 5px !important;
+  border: none;
+  background-color: #1a3050;
+  color: white;
+  font-size: 16px !important;
+  transition: all 0.5s;
+  padding: 5px 15px;
+}
+button:hover {
+  background-color: white;
+  color: #34478c;
+  box-shadow: 0px 0px 2px -3px #34478c, 0px 0px 16px -3px #34478c;
+}
