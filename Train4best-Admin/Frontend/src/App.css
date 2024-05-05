@@ -114,6 +114,10 @@ body {
   width: 100%;
 }
 
+.custom-dropdown-1 .dropdown-toggle::after {
+  color: #34478c;
+  font-size: 1.5rem;
+}
 /* Sidebar Section */
 /* button */
 button {

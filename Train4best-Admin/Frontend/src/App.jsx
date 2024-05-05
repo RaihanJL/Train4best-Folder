@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Userpage from "./pages/user";
 import Catalogpage from "./pages/catalog";
 import Elearningpage from "./pages/e-learning";
-import Paymentpage from "./pages/payment";
+import PaymentCatalogpage from "./pages/paymentCatalog";
+import PaymentCoursespage from "./pages/paymentCourses";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/user" element={<Userpage />} />
         <Route path="/catalog" element={<Catalogpage />} />
         <Route path="/e-learning" element={<Elearningpage />} />
-        <Route path="/payment" element={<Paymentpage />} />
+        <Route path="/paymentCatalog" element={<PaymentCatalogpage />} />
+        <Route path="/paymentCourses" element={<PaymentCoursespage />} />
       </Routes>
     </>
   );

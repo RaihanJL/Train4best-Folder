@@ -4,12 +4,20 @@ import Sidebar from "../component/sidebar";
 import DataTable from "react-data-table-component";
 import ConfirmationModal from "../component/Popup";
 
-const Userpage = () => {
+const PaymentCatalogpage = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const columns = [
+    {
+      name: "ID Product",
+      selector: (row) => row.id,
+    },
+    {
+      name: "Product",
+      selector: (row) => row.product,
+    },
     {
       name: "Name",
       selector: (row) => row.name,
@@ -20,13 +28,66 @@ const Userpage = () => {
       selector: (row) => row.email,
     },
     {
-      name: "Password",
-      selector: (row) => (showPassword ? row.password : "********"),
-    },
-    {
       name: "Phone",
       selector: (row) => row.phone,
     },
+    {
+      name: "Payment Code",
+      selector: (row) => row.paymentCode,
+    },
+    {
+      name: "Price",
+      selector: (row) => row.price,
+    },
+    {
+      name: "Payment Method",
+      selector: (row) => row.paymentMethod,
+    },
+    {
+      name: "Transaction Date",
+      selector: (row) => row.transactionDate,
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      cell: (row) => {
+        let color = "";
+        switch (row.status) {
+          case "Done":
+            color = "green";
+            break;
+          case "Pending":
+            color = "#ffc107";
+            break;
+          case "Failed":
+            color = "red";
+            break;
+          default:
+            color = "black";
+            break;
+        }
+        return (
+          <p
+            style={{
+              backgroundColor: color,
+              color: "white",
+              fontWeight: "bold",
+              paddingTop: "8px",
+              width: "120px",
+              textAlign: "center",
+              paddingBottom: "8px",
+              borderRadius: "5px",
+              border: "none",
+              cursor: "default",
+              margin: "0",
+            }}
+          >
+            {row.status}
+          </p>
+        );
+      },
+    },
+
     {
       name: "Actions",
       cell: (row) => (
@@ -34,151 +95,74 @@ const Userpage = () => {
           <button className="mx-1" onClick={() => handleEdit(row)}>
             Edit
           </button>
-          <button onClick={() => handleRemove(row)}>Delete</button>
         </>
       ),
     },
   ];
   const data = [
     {
-      id: 1,
+      id: "1",
+      product: "Good To Great",
       name: "Tasya",
       email: "tasya@gmail.com",
-      password: "9999",
       phone: "086594895463",
+      paymentCode: "1341",
+      price: "Rp.20.000",
+      paymentMethod: "BCA",
+      transactionDate: "02-10-2004",
+      status: "Done",
     },
     {
       id: 2,
+      product: "Begin Again",
       name: "Raihan",
       email: "Raihan@gmail.com",
       password: "9999",
       phone: "086594895463",
+      paymentCode: "1342",
+      price: "Rp.20.000",
+      paymentMethod: "Mandiri",
+      transactionDate: "02-10-2004",
+      status: "Failed",
     },
     {
       id: 3,
+      product: "A Love & Beyond",
       name: "ekal",
       email: "ekal@gmail.com",
       password: "9999",
       phone: "086594895463",
+      paymentCode: "1343",
+      price: "Rp.20.000",
+      paymentMethod: "BCA",
+      transactionDate: "02-10-2004",
+      status: "Pending",
     },
     {
       id: 4,
+      product: "Battle Of Ink and Ice",
       name: "nadia",
       email: "nadia@gmail.com",
       password: "9999",
       phone: "086594895463",
+      paymentCode: "1344",
+      price: "Rp.20.000",
+      paymentMethod: "Mandiri",
+      transactionDate: "02-10-2004",
+      status: "Pending",
     },
     {
       id: 5,
+      product: "The Perfect Cupcake",
       name: "kevin",
       email: "kevin@gmail.com",
       password: "9999",
       phone: "086594895463",
-    },
-    {
-      id: 6,
-      name: "fathir",
-      email: "fathir@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 7,
-      name: "bilqis",
-      email: "bilqis@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 8,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 9,
-      name: "kevin",
-      email: "kevin@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 10,
-      name: "fathir",
-      email: "fathir@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 11,
-      name: "bilqis",
-      email: "bilqis@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 12,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 13,
-      name: "kevin",
-      email: "kevin@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 14,
-      name: "fathir",
-      email: "fathir@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 15,
-      name: "bilqis",
-      email: "bilqis@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 16,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 17,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 18,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 19,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-    },
-    {
-      id: 20,
-      name: "revan",
-      email: "revan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
+      paymentCode: "1345",
+      price: "Rp.20.000",
+      paymentMethod: "BCA",
+      transactionDate: "02-10-2004",
+      status: "Failed",
     },
   ];
   const [records, setRecords] = useState(data);
@@ -268,4 +252,4 @@ const Userpage = () => {
   );
 };
 
-export default Userpage;
+export default PaymentCatalogpage;

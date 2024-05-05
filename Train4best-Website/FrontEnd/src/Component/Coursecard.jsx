@@ -8,7 +8,7 @@ const Courses = [
     title: "Big Data Scientist",
     institution: "LSP Teknologi Digital",
     price: "$27",
-    links: "/Coursesdetail",
+    links: "/CoursesDetail",
   },
   {
     id: 2,
@@ -85,7 +85,7 @@ const Coursecard = () => {
                         display: "flex",
                         justifyContent: "end",
                       }}
-                      to={Courses.links}
+                      to={course.links}
                     >
                       <b>See More &gt;</b>
                     </Link>

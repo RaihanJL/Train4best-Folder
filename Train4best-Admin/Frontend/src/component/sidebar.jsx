@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-// Assuming you have a separate CSS file for styling
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 const Sidebar = () => {
   return (
@@ -13,9 +15,33 @@ const Sidebar = () => {
       <Link className="sidebar-link" to={"/e-learning"}>
         <h2>E-Learning</h2>
       </Link>
-      <Link className="sidebar-link" to={"/payment"}>
+      <div className="d-flex align-items-center sidebar-link">
         <h2>Payment</h2>
-      </Link>
+        <Nav style={{ padding: 0 }}>
+          <NavDropdown
+            id="nav-dropdown-dark-example"
+            className="custom-dropdown-1"
+          >
+            <NavDropdown.Item>
+              <Link
+                to={"/paymentCatalog"}
+                style={{ textDecoration: "none", color: "#34478c" }}
+              >
+                Payment Catalog
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item>
+              <Link
+                to={"/paymentCourses"}
+                style={{ textDecoration: "none", color: "#34478c" }}
+              >
+                Payment Courses
+              </Link>
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </div>
     </div>
   );
 };

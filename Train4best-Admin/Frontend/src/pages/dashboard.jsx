@@ -5,8 +5,11 @@ import Sidebar from "../component/sidebar";
 const DashboardPage = () => {
   return (
     <>
-      <Navbar />
-      <div className="container d-flex justify-content-between align-align-items-start">
+      <div className="container">
+        <Navbar />
+      </div>
+
+      <div className=" container d-flex justify-content-between align-align-items-start">
         <div>
           <Sidebar />
         </div>

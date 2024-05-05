@@ -7,15 +7,15 @@ const Navbar = () => {
   return (
     <>
       <nav>
-        <div className="navbar mx-5 px-5 pt-4 pb-4">
+        <div className="navbar pt-4 pb-4">
           <div className="left-section">
-            <a href="/">
+            <Link to="/">
               <img
                 className="left-image"
                 src="/assets/train4best-blue-no-bg.png"
                 alt="Train4best Logo"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="dropdown-section d-flex align-items-center ">
