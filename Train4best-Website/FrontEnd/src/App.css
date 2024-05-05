@@ -1219,3 +1219,20 @@ input[type="submit"]:hover {
   display: flex;
   gap: 20px;
 }
+
+/* paymentcourse Section */
+.box-card-courses-py {
+  background-color: #34478c;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 40px;
+}
+
+.container-courses-py {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* paymentcourse Section */
