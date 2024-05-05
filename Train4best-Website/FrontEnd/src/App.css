@@ -39,25 +39,25 @@ button:hover {
 .box-container {
   background-color: rgb(252, 252, 252);
   border-radius: 10px;
-  position: fixed;
-  width: 480px;
-  height: 440px;
-  top: 120px;
-  left: 170px;
+  width: 550px;
+  height: 600px;
+  margin: auto; /* Center the box horizontally */
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
 }
 
 .box-container .img-t4best {
-  margin-top: 20px;
+  margin-top: 40px;
+  margin-bottom: 50px;
   height: 8vh;
 }
 
 .container-register {
-  padding: 5px;
-  padding-left: 60px;
-  padding-right: 70px;
+  padding: 0 60px; /* Increase padding for better spacing */
   background-color: white;
   font-family: "Poppins-Regular", Helvetica;
-  font-weight: 70px;
   font-size: 14px;
   color: #34478c;
   border-radius: 10px;
@@ -95,8 +95,8 @@ input[type="password"]:focus {
 .text-register {
   display: flex;
   justify-content: space-between;
-  width: 347px;
-  margin-bottom: 8px;
+  margin-bottom: 25px;
+  font-size: 11px;
 }
 
 .container-login {
@@ -114,7 +114,6 @@ input[type="password"]:focus {
   padding-left: 35px;
   padding-right: 35px;
   border-radius: 10px;
-  margin-left: 170px;
   border: none;
   cursor: pointer;
 }
@@ -132,54 +131,52 @@ input[type="password"]:focus {
   background-size: cover;
 }
 
-.right-container {
+.background-blue {
   background-color: #34478c;
   width: 100%;
-  max-width: 830px;
-  height: 100vh;
-  border-radius: 10px 0px 0px 10px;
-  box-shadow: -8px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: absolute;
+}
+
+.right-container {
+  width: 50%; /* Set width to 50% for half blue background */
+  height: 100vh; /* Set height to full viewport height */
+  background-color: #34478c; /* Set background color to blue */
   position: fixed;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  border-radius: 8px 0 0 8px;
 }
 
 .box-login {
   background-color: rgb(252, 252, 252);
   border-radius: 10px;
-  position: fixed;
-  width: 480px;
-
-  justify-content: center;
-  align-items: center;
-  bottom: 100px;
-  top: 120px;
-  left: 180px;
+  width: 90%;
+  width: 550px;
+  height: 600px;
+  flex-shrink: 0;
+  padding: 0 60px;
+  margin: 0 auto; /* Center the box horizontally */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
 }
 
 .box-login .img-t4best {
-  margin-top: 50px;
-  margin-bottom: 20px;
+  margin-top: 80px;
+  margin-bottom: 80px;
   height: 8vh;
 }
 
 .container-forlogin {
-  padding: 5px;
-  padding-left: 60px;
-  padding-right: 70px;
-  background-color: white;
   font-family: "Poppins-Regular", Helvetica;
-  font-weight: 70px;
   font-size: 14px;
   color: #34478c;
-  border-radius: 10px;
 }
 
 .text-login {
   display: flex;
   justify-content: space-between;
-  width: 347px;
   margin-bottom: 25px;
   font-size: 11px;
 }
@@ -191,12 +188,13 @@ input[type="password"]:focus {
   padding-left: 40px;
   padding-right: 40px;
   border-radius: 10px;
-  margin-top: 10px;
-  margin-left: 180px;
   border: none;
   cursor: pointer;
 }
-
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
 .login-btn:hover {
   opacity: 0.9;
 }

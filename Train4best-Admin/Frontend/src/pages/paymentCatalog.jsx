@@ -204,7 +204,7 @@ const PaymentCatalogpage = () => {
         </div>
         <div className="w-75">
           <div style={{ borderBottom: "2px solid black" }}>
-            <h2 className="text-center mb-2 ">USER</h2>
+            <h2 className="text-center mb-2 ">Payment Catalog</h2>
           </div>
           <div className="mt-2">
             <div className="text-end">
