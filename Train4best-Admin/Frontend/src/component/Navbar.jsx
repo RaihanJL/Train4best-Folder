@@ -9,7 +9,7 @@ const Navbar = () => {
       <nav>
         <div className="navbar pt-4 pb-4">
           <div className="left-section">
-            <Link to="/">
+            <Link to="/dashboard">
               <img
                 className="left-image"
                 src="/assets/train4best-blue-no-bg.png"
@@ -22,21 +22,18 @@ const Navbar = () => {
             <div>
               <img src="../assets/image 4.png" alt="User" />
             </div>
-            <Link to={"/Profile"} style={{ textDecoration: "none" }}>
-              <p
-                className="middle-button "
-                style={{ margin: "0", marginLeft: "10px", cursor: "pointer" }}
-              >
-                Admin
-              </p>
-            </Link>
+            <p
+              className="middle-button "
+              style={{ margin: "0", marginLeft: "10px", cursor: "pointer" }}
+            >
+              Admin
+            </p>
+
             <Nav>
               <NavDropdown
                 id="nav-dropdown-dark-example"
                 className="custom-dropdown"
               >
-                <NavDropdown.Item href="/Profile">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="/History">History</NavDropdown.Item>
                 <NavDropdown.Item href="/">Log Out</NavDropdown.Item>
               </NavDropdown>
             </Nav>

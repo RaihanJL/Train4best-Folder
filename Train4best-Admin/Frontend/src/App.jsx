@@ -7,12 +7,14 @@ import Catalogpage from "./pages/catalog";
 import Elearningpage from "./pages/e-learning";
 import PaymentCatalogpage from "./pages/paymentCatalog";
 import PaymentCoursespage from "./pages/paymentCourses";
+import Loginpage from "./pages/login";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<Loginpage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/user" element={<Userpage />} />
         <Route path="/catalog" element={<Catalogpage />} />
         <Route path="/e-learning" element={<Elearningpage />} />

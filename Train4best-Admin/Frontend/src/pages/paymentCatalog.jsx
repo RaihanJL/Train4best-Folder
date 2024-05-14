@@ -1,196 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
-import DataTable from "react-data-table-component";
-import ConfirmationModal from "../component/Popup";
+import axios from "axios";
 
 const PaymentCatalogpage = () => {
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState([]);
 
-  const columns = [
-    {
-      name: "ID Product",
-      selector: (row) => row.id,
-    },
-    {
-      name: "Product",
-      selector: (row) => row.product,
-    },
-    {
-      name: "Name",
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: (row) => row.email,
-    },
-    {
-      name: "Phone",
-      selector: (row) => row.phone,
-    },
-    {
-      name: "Payment Code",
-      selector: (row) => row.paymentCode,
-    },
-    {
-      name: "Price",
-      selector: (row) => row.price,
-    },
-    {
-      name: "Payment Method",
-      selector: (row) => row.paymentMethod,
-    },
-    {
-      name: "Transaction Date",
-      selector: (row) => row.transactionDate,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      cell: (row) => {
-        let color = "";
-        switch (row.status) {
-          case "Done":
-            color = "green";
-            break;
-          case "Pending":
-            color = "#ffc107";
-            break;
-          case "Failed":
-            color = "red";
-            break;
-          default:
-            color = "black";
-            break;
-        }
-        return (
-          <p
-            style={{
-              backgroundColor: color,
-              color: "white",
-              fontWeight: "bold",
-              paddingTop: "8px",
-              width: "120px",
-              textAlign: "center",
-              paddingBottom: "8px",
-              borderRadius: "5px",
-              border: "none",
-              cursor: "default",
-              margin: "0",
-            }}
-          >
-            {row.status}
-          </p>
-        );
-      },
-    },
+  useEffect(() => {
+    axios
+      .get("http://localhost:8081/paymentCatalog")
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, []);
 
-    {
-      name: "Actions",
-      cell: (row) => (
-        <>
-          <button className="mx-1" onClick={() => handleEdit(row)}>
-            Edit
-          </button>
-        </>
-      ),
-    },
-  ];
-  const data = [
-    {
-      id: "1",
-      product: "Good To Great",
-      name: "Tasya",
-      email: "tasya@gmail.com",
-      phone: "086594895463",
-      paymentCode: "1341",
-      price: "Rp.20.000",
-      paymentMethod: "BCA",
-      transactionDate: "02-10-2004",
-      status: "Done",
-    },
-    {
-      id: 2,
-      product: "Begin Again",
-      name: "Raihan",
-      email: "Raihan@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-      paymentCode: "1342",
-      price: "Rp.20.000",
-      paymentMethod: "Mandiri",
-      transactionDate: "02-10-2004",
-      status: "Failed",
-    },
-    {
-      id: 3,
-      product: "A Love & Beyond",
-      name: "ekal",
-      email: "ekal@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-      paymentCode: "1343",
-      price: "Rp.20.000",
-      paymentMethod: "BCA",
-      transactionDate: "02-10-2004",
-      status: "Pending",
-    },
-    {
-      id: 4,
-      product: "Battle Of Ink and Ice",
-      name: "nadia",
-      email: "nadia@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-      paymentCode: "1344",
-      price: "Rp.20.000",
-      paymentMethod: "Mandiri",
-      transactionDate: "02-10-2004",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      product: "The Perfect Cupcake",
-      name: "kevin",
-      email: "kevin@gmail.com",
-      password: "9999",
-      phone: "086594895463",
-      paymentCode: "1345",
-      price: "Rp.20.000",
-      paymentMethod: "BCA",
-      transactionDate: "02-10-2004",
-      status: "Failed",
-    },
-  ];
-  const [records, setRecords] = useState(data);
-
-  function handleFilter(event) {
-    const newData = data.filter((row) => {
-      return row.name.toLowerCase().includes(event.target.value.toLowerCase());
-    });
-    setRecords(newData);
-  }
-
-  function handleEdit(row) {
-    // Here you can open a modal or navigate to an edit page
-    console.log("Editing row:", row);
-  }
-
-  function handleRemove(row) {
-    const newData = records.filter((record) => record.id !== row.id);
-    setSelectedRecord(row);
-    setShowConfirmation(true);
-    console.log("Removing row:", row);
-  }
-  function handleConfirmDelete() {
-    const newData = records.filter((record) => record.id !== selectedRecord.id);
-    setRecords(newData);
-    setSelectedRecord(null);
-    setShowConfirmation(false); // Close the confirmation dialog
-  }
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")} ${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
   return (
     <>
@@ -203,51 +42,41 @@ const PaymentCatalogpage = () => {
           <Sidebar />
         </div>
         <div className="w-75">
-          <div style={{ borderBottom: "2px solid black" }}>
+          <div>
             <h2 className="text-center mb-2 ">Payment Catalog</h2>
           </div>
           <div className="mt-2">
-            <div className="text-end">
-              <input
-                className="p-1 rounded"
-                type="text"
-                onChange={handleFilter}
-                placeholder="Search"
-              />
-            </div>
-            <DataTable
-              columns={columns}
-              data={records}
-              customStyles={{
-                rows: {
-                  style: {
-                    fontSize: "16px", // Adjust the font size here
-                    padding: "5px", // Adjust the padding here
-                    margin: "2px 0", // Adjust the margin here
-                  },
-                },
-                headCells: {
-                  style: {
-                    fontSize: "16px", // Adjust the font size here
-                  },
-                },
-                cells: {
-                  style: {
-                    fontSize: "16px", // Adjust the font size here
-                  },
-                },
-              }}
-              fixedHeader
-              pagination
-            ></DataTable>
+            {data.length > 0 ? (
+              <table className="table">
+                <thead className="table-header">
+                  <tr>
+                    <th>ID Payment</th>
+                    <th>Email</th>
+                    <th>ID Barang</th>
+                    <th>Payment Method</th>
+                    <th>Transaction Date</th>
+                    <th>Receipt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((payment) => (
+                    <tr key={payment.id_payment_catalog}>
+                      <td>{payment.id_payment_catalog}</td>
+                      <td>{payment.email_user}</td>
+                      <td>{payment.id_barang}</td>
+                      <td>{payment.payment_method}</td>
+                      <td>{formatDate(payment.transaction_date)}</td>
+                      <td>{payment.receipt_payment.data}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No data available</p>
+            )}
           </div>
         </div>
       </div>
-      <ConfirmationModal
-        show={showConfirmation}
-        onClose={() => setShowConfirmation(false)}
-        onConfirm={handleConfirmDelete}
-      />
     </>
   );
 };

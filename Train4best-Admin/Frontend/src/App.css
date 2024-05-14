@@ -134,3 +134,119 @@ button:hover {
   color: #34478c;
   box-shadow: 0px 0px 2px -3px #34478c, 0px 0px 16px -3px #34478c;
 }
+.data-catalog th,
+.data-catalog td {
+  padding-right: 50px !important; /* Adjust this value to increase or decrease the spacing */
+}
+
+.description-cell {
+  text-align: justify;
+}
+.table-header {
+  border-width: 2px 0px 2px 0px;
+  border-style: solid;
+  border-color: black;
+}
+
+.login {
+  background: url(/assets/registloginbg.jpg);
+  height: 100vh;
+  background-size: cover;
+}
+
+.background-blue {
+  background-color: #34478c;
+  width: 100%;
+  position: absolute;
+}
+
+.right-container {
+  width: 50%; /* Set width to 50% for half blue background */
+  height: 100vh; /* Set height to full viewport height */
+  background-color: #34478c; /* Set background color to blue */
+  position: fixed;
+  right: 0;
+  top: 0;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  border-radius: 8px 0 0 8px;
+}
+
+.box-login {
+  background-color: rgb(252, 252, 252);
+  border-radius: 10px;
+  width: 90%;
+  width: 550px;
+  height: 600px;
+  flex-shrink: 0;
+  padding: 0 60px;
+  margin: 0 auto; /* Center the box horizontally */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.box-login .img-t4best {
+  margin-top: 80px;
+  margin-bottom: 80px;
+  height: 10vh;
+}
+
+.container-forlogin {
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  color: #34478c;
+}
+
+.text-login {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  font-size: 11px;
+}
+
+.login-btn {
+  background-color: #1a3050;
+  color: #fafafa;
+  padding: 4px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+.login-btn:hover {
+  opacity: 0.9;
+}
+
+input[type="text"] {
+  padding-left: 20px;
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 15px 0;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  background: #34478c;
+}
+
+input[type="password"] {
+  padding-left: 20px;
+  width: 100%;
+  padding: 15px;
+  margin: 1px 0 3px 0;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  background: #34478c;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+/* End of Login Page */

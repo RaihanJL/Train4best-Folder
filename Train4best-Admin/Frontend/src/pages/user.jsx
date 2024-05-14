@@ -18,6 +18,15 @@ const Userpage = () => {
       });
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate().toString().padStart(2, "0")}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${date.getFullYear()}`;
+  };
+
   return (
     <>
       <div className="container">
@@ -29,27 +38,33 @@ const Userpage = () => {
           <Sidebar />
         </div>
         <div className="w-75">
-          <div style={{ borderBottom: "2px solid black" }}>
+          <div>
             <h2 className="text-center mb-2">User</h2>
           </div>
           <div className="mt-2">
             {data.length > 0 ? (
               <table className="table">
-                <thead>
+                <thead className="table-header">
                   <tr>
+                    <th>No.</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Password</th>
-                    <th>Phone</th>
+                    <th>Register Date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.map((user, index) => (
                     <tr key={index}>
-                      <td>{user.name_user}</td>
-                      <td>{user.email_user}</td>
+                      <td>{index + 1}.</td>
+                      <td>{user.username}</td>
+                      <td>{user.email}</td>
                       <td>{user.password}</td>
-                      <td>{user.phone_number}</td>
+                      <td>{formatDate(user.register_date)}</td>
+                      <td>
+                        <button>Delete</button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
