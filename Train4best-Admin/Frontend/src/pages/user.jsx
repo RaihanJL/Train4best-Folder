@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
 
 const Userpage = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/users")
+    fetch("http://localhost:8081/users")
       .then((response) => {
-        setData(response.data);
-        console.log(response.data);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
+        setLoading(false);
       });
   }, []);
 
@@ -25,6 +32,31 @@ const Userpage = () => {
     )
       .toString()
       .padStart(2, "0")}-${date.getFullYear()}`;
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      // Make a DELETE request to your API to delete the user with the specified id
+      await fetch(`http://localhost:8081/users/${id}`, {
+        method: "DELETE",
+      });
+
+      // Remove the deleted user from the data array
+      const updatedData = data.filter((user) => user.id !== id);
+      setData(updatedData);
+
+      console.log(`User with ID ${id} deleted successfully`);
+    } catch (error) {
+      console.error(`Error deleting user with ID ${id}:`, error);
+    }
+  };
+
+  const maskPassword = (password) => {
+    return password.length > 2
+      ? `${password.charAt(0)}${"*".repeat(
+          password.length - 2
+        )}${password.slice(-1)}`
+      : password;
   };
 
   return (
@@ -42,7 +74,9 @@ const Userpage = () => {
             <h2 className="text-center mb-2">User</h2>
           </div>
           <div className="mt-2">
-            {data.length > 0 ? (
+            {loading ? (
+              <p>Loading...</p>
+            ) : data.length > 0 ? (
               <table className="table">
                 <thead className="table-header">
                   <tr>
@@ -58,12 +92,14 @@ const Userpage = () => {
                   {data.map((user, index) => (
                     <tr key={index}>
                       <td>{index + 1}.</td>
-                      <td>{user.username}</td>
+                      <td>{user.name}</td>
                       <td>{user.email}</td>
-                      <td>{user.password}</td>
-                      <td>{formatDate(user.register_date)}</td>
+                      <td>{maskPassword(user.password)}</td>
+                      <td>{formatDate(user.createdAt)}</td>
                       <td>
-                        <button>Delete</button>
+                        <button onClick={() => handleDelete(user.id)}>
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}

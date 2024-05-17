@@ -10,44 +10,42 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { format } from "date-fns";
 
 const DashboardPage = () => {
   const [monthlyData, setMonthlyData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:8081/users")
       .then((response) => response.json())
       .then((data) => {
+        console.log("API Response:", data); // Log the JSON data
         const currentDate = new Date();
         const threeMonthsAgo = new Date();
         threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
-        // Ubah format data tanggal pendaftaran ke bulan
         const monthlyCounts = {};
         data.forEach((user) => {
-          const registerDate = new Date(user.register_date);
+          const registerDate = new Date(user.createdAt);
           if (registerDate >= threeMonthsAgo && registerDate <= currentDate) {
-            const monthYear = registerDate.toLocaleString("default", {
-              month: "long",
-              year: "numeric",
-            });
-            if (monthlyCounts[monthYear]) {
-              monthlyCounts[monthYear]++;
-            } else {
-              monthlyCounts[monthYear] = 1;
-            }
+            const monthYear = format(registerDate, "MMMM yyyy");
+            monthlyCounts[monthYear] = (monthlyCounts[monthYear] || 0) + 1;
           }
         });
 
-        // Bentuk data untuk chart
         const chartData = Object.keys(monthlyCounts).map((key) => ({
           month: key,
           userCount: monthlyCounts[key],
         }));
 
         setMonthlyData(chartData);
+        setLoading(false);
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => {
+        console.error("Error:", error);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -75,14 +73,18 @@ const DashboardPage = () => {
             className="d-flex flex-column align-items-center"
           >
             <h2>User Count Chart</h2>
-            <BarChart width={1000} height={500} data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="userCount" fill="#8884d8" />
-            </BarChart>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <BarChart width={1000} height={500} data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="userCount" fill="#8884d8" />
+              </BarChart>
+            )}
           </div>
         </div>
       </div>

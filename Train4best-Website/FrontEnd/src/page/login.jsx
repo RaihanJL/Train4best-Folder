@@ -1,6 +1,29 @@
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [msg, setMsg] = useState("");
+
+  const Auth = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/login", {
+        email: email,
+        password: password,
+      });
+      navigate("/Home");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
+  };
+
   return (
     <>
       <section className="login">
@@ -15,14 +38,17 @@ const LoginPage = () => {
                     alt="Train4Best Logo"
                   />
                 </div>
-                <form>
+                <form onSubmit={Auth}>
+                  <p>{msg}</p>
                   <div className="container-forlogin">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">Email or Username</label>
                     <input
                       type="text"
                       placeholder="Enter Email"
                       name="email"
                       id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                     <label htmlFor="pw">Password</label>
@@ -31,9 +57,10 @@ const LoginPage = () => {
                       placeholder="Enter Password"
                       name="psw"
                       id="psw"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       required
                     />
-
                     <div className="text-login">
                       <div className="container-regist">
                         <p>
@@ -41,20 +68,17 @@ const LoginPage = () => {
                           <Link to={"/register"}>Register here.</Link>
                         </p>
                       </div>
-
                       <div className="forgot-pw">
                         <p>Forgot Password?</p>
                       </div>
                     </div>
                   </div>
-                </form>
-                <Link style={{ textDecoration: "none" }} to={"/Home"}>
                   <div className="btn-container">
                     <button type="submit" className="login-btn">
                       LOGIN
                     </button>
                   </div>
-                </Link>
+                </form>
               </div>
             </div>
           </div>

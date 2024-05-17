@@ -12,14 +12,10 @@ const db = mysql.createConnection({
   database: "train4best",
 });
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// Parse JSON bodies using express.json()
+app.use(express.json());
+
+// Your routes and other middleware
 
 app.get("/users", (req, res) => {
   const sql = "SELECT * FROM users";
@@ -82,6 +78,19 @@ app.get("/paymentCourse", (req, res) => {
   db.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
+  });
+});
+
+app.delete("/users/:id", (req, res) => {
+  const userId = req.params.id;
+  const sql = `DELETE FROM users WHERE id = ${userId}`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error deleting user:", err);
+      return res.status(500).json({ error: "An error occurred" });
+    }
+    console.log(`User with ID ${userId} deleted successfully`);
+    return res.json({ message: "User deleted successfully" });
   });
 });
 

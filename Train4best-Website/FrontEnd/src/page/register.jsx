@@ -1,7 +1,32 @@
-// import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const registerPage = () => {
+const RegisterPage = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
+  const navigate = useNavigate();
+  const [msg, setMsg] = useState("");
+
+  const Register = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/users", {
+        name: name,
+        email: email,
+        password: password,
+        confPassword: confPassword,
+      });
+      navigate("/login");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
+  };
+
   return (
     <>
       <section className="register">
@@ -14,7 +39,10 @@ const registerPage = () => {
                 alt="Train4Best Logo"
               />
             </div>
-            <form>
+            <p style={{ color: "red" }} className="text-center fw-bold">
+              {msg}
+            </p>
+            <form onSubmit={Register}>
               <div className="container-register">
                 <label htmlFor="name">Name</label>
                 <input
@@ -22,6 +50,8 @@ const registerPage = () => {
                   placeholder="Enter Name"
                   name="name"
                   id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
 
@@ -31,6 +61,8 @@ const registerPage = () => {
                   placeholder="Enter Email"
                   name="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
 
@@ -40,17 +72,25 @@ const registerPage = () => {
                   placeholder="Enter Password"
                   name="psw"
                   id="psw"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-
+                <label htmlFor="psw">Confirm Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  name="psw"
+                  id="psw"
+                  value={confPassword}
+                  onChange={(e) => setConfPassword(e.target.value)}
+                  required
+                />
                 <div className="text-register">
                   <div className="container-login">
                     <p>
                       Already have an account?
-                      <Link to={"/login"}>
-                        {" "}
-                        <a href="login.html">Login</a>.
-                      </Link>
+                      <Link to="/login"> Login</Link>.
                     </p>
                   </div>
 
@@ -59,15 +99,12 @@ const registerPage = () => {
                   </div>
                 </div>
               </div>
-            </form>
-            <div className="btn-container">
-              <Link to={"/login"}>
+              <div className="btn-container">
                 <button type="submit" className="register-btn">
                   REGISTER
                 </button>
-              </Link>
-            </div>
-            <a href="login.html"></a>
+              </div>
+            </form>
           </div>
         </div>
       </section>
@@ -75,4 +112,4 @@ const registerPage = () => {
   );
 };
 
-export default registerPage;
+export default RegisterPage;

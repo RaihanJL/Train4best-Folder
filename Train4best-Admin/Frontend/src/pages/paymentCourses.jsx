@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
-import axios from "axios";
 
-const PaymentCatalogpage = () => {
+const PaymentCoursepage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/paymentCourse")
+    fetch("http://localhost:8081/paymentCourse")
       .then((response) => {
-        setData(response.data);
-        console.log(response.data);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setData(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -52,7 +56,7 @@ const PaymentCatalogpage = () => {
                   <tr>
                     <th>ID Payment</th>
                     <th>Email</th>
-                    <th>ID Barang</th>
+                    <th>ID Course</th>
                     <th>Payment Method</th>
                     <th>Transaction Date</th>
                     <th>Receipt</th>
@@ -63,7 +67,7 @@ const PaymentCatalogpage = () => {
                     <tr key={payment.id_payment_course}>
                       <td>{payment.id_payment_course}</td>
                       <td>{payment.email_user}</td>
-                      <td>{payment.id_barang}</td>
+                      <td>{payment.id_course}</td>
                       <td>{payment.payment_method}</td>
                       <td>{formatDate(payment.transaction_date)}</td>
                       <td>{payment.receipt_payment.data}</td>
@@ -81,4 +85,4 @@ const PaymentCatalogpage = () => {
   );
 };
 
-export default PaymentCatalogpage;
+export default PaymentCoursepage;

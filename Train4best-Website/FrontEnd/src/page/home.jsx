@@ -2,13 +2,37 @@ import React from "react";
 import Footer from "../Component/Footer";
 import Navbar from "../Component/Navbar";
 import CarouselA from "../Component/Carousel";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // Use named import for jwt-decode
 
 function Homepages() {
+  const [name, setName] = useState("");
+  const [token, setToken] = useState("");
+  const [expire, setExpire] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => {
+    refreshToken();
+  }, []);
+
+  const refreshToken = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/token");
+      setToken(response.data.accessToken);
+      const decoded = jwtDecode(response.data.accessToken); // Use the named import
+      setName(decoded.name);
+      setExpire(decoded.exp);
+    } catch (error) {
+      navigate("/");
+    }
+  };
+
   return (
     <>
       <div>
         {/* Navbar Section */}
-        <Navbar></Navbar>
+        <Navbar />
         {/* Jumbotron Section */}
         <div className="container jumb-container">
           <div className="jumbotron">
@@ -66,12 +90,11 @@ function Homepages() {
           <div className="first-text text-center mt-5 mb-3">
             <h1>
               Looking for something <br />
-              interesting ?
+              interesting?
             </h1>
           </div>
-
           <CarouselA />
-          <div class="last-text d-flex align-items-center justify-content-center gap-5 mt-3">
+          <div className="last-text d-flex align-items-center justify-content-center gap-5 mt-3">
             <h1>
               Here are some of <br />
               our products
@@ -79,7 +102,6 @@ function Homepages() {
             <button className="fs-5 fw-bold">Check it out now &gt;</button>
           </div>
         </div>
-
         {/* Course Section */}
         <div className="crs-background">
           <div className="container">
@@ -125,7 +147,8 @@ function Homepages() {
             <img src="../assets/map.png" alt="Map" />
             <div>
               <h2 style={{ fontSize: "48px" }}>
-                if you're interested, <br />
+                if you're interested,
+                <br />
                 contact us now
               </h2>
               <a href="./Contact.html">
@@ -137,7 +160,8 @@ function Homepages() {
             <p>
               Kindo Building, Block C2, Jl. Duren Tiga Raya 101, Jakarta 12760
               <br />
-              RumahLab Train4best Jl. Laboratorium No.1 Duren <br />
+              RumahLab Train4best Jl. Laboratorium No.1 Duren
+              <br />
               Tiga, Jakarta Selatan, DKI Jakarta 12760
             </p>
           </div>
@@ -154,7 +178,7 @@ function Homepages() {
         </div>
         {/* Contact Us Section */}
       </div>
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }

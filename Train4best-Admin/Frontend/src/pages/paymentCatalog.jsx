@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
-import axios from "axios";
 
 const PaymentCatalogpage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/paymentCatalog")
+    fetch("http://localhost:8081/paymentCatalog")
       .then((response) => {
-        setData(response.data);
-        console.log(response.data);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setData(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
