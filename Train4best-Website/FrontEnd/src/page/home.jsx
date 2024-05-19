@@ -1,30 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Component/Footer";
 import Navbar from "../Component/Navbar";
 import CarouselA from "../Component/Carousel";
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Use named import for jwt-decode
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function Homepages() {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
+
   const navigate = useNavigate();
+
   useEffect(() => {
     refreshToken();
   }, []);
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/token");
+      const response = await axios.get("http://localhost:5000/token", {
+        withCredentials: true, // Ensure cookies are sent with the request
+      });
+      console.log("Token response:", response.data);
       setToken(response.data.accessToken);
-      const decoded = jwtDecode(response.data.accessToken); // Use the named import
+      const decoded = jwtDecode(response.data.accessToken);
+      console.log("Decoded token:", decoded);
       setName(decoded.name);
       setExpire(decoded.exp);
+      fetchCatalogItems(response.data.accessToken);
     } catch (error) {
+      console.error("Token refresh failed:", error);
       navigate("/");
+    }
+  };
+
+  const fetchCatalogItems = async (token) => {
+    try {
+      const response = await axios.get("http://localhost:5000/catalog", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // Handle the catalog items as needed
+      console.log("Catalog items:", response.data);
+    } catch (error) {
+      console.error("Failed to fetch catalog items:", error);
     }
   };
 
@@ -80,7 +101,9 @@ function Homepages() {
               >
                 "Getting know something is a beautiful process"
               </p>
-              <button>Get Started &gt;</button>
+              <Link to={"/About"}>
+                <button>Get Started &gt;</button>
+              </Link>
             </div>
           </div>
           <img className="circle-1" src="../assets/Vector.png" alt="Circle" />
@@ -99,7 +122,9 @@ function Homepages() {
               Here are some of <br />
               our products
             </h1>
-            <button className="fs-5 fw-bold">Check it out now &gt;</button>
+            <Link to={"/Catalog"}>
+              <button className="fs-5 fw-bold">Check it out now &gt;</button>
+            </Link>
           </div>
         </div>
         {/* Course Section */}
@@ -127,12 +152,14 @@ function Homepages() {
               </div>
             </div>
             <div>
-              <button
-                style={{ marginTop: "20px" }}
-                className="crs-button fw-bold"
-              >
-                Learn more &gt;
-              </button>
+              <Link to={"/Courselist"}>
+                <button
+                  style={{ marginTop: "20px" }}
+                  className="crs-button fw-bold"
+                >
+                  Learn more &gt;
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -151,9 +178,9 @@ function Homepages() {
                 <br />
                 contact us now
               </h2>
-              <a href="./Contact.html">
+              <Link to={"/Contact"}>
                 <button className="cus-button fw-bold">Contact Us</button>
-              </a>
+              </Link>
             </div>
           </div>
           <div style={{ marginLeft: "135px" }}>

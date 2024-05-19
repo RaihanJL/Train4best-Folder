@@ -44,7 +44,7 @@ const DonepaymentPage = () => {
           </div>
         </div>
         <div className="d-flex justify-content-end">
-          <Link to={"/"}>
+          <Link to={"/Home"}>
             <button>Back Home</button>
           </Link>
         </div>

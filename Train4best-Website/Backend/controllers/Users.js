@@ -93,3 +93,28 @@ export const Logout = async (req, res) => {
   res.clearCookie("refreshToken");
   return res.sendStatus(200);
 };
+
+export const updateUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  const userEmail = req.email;
+
+  try {
+    let updateFields = { name, email };
+    if (password) {
+      const salt = await bcrypt.genSalt();
+      const hashPassword = await bcrypt.hash(password, salt);
+      updateFields.password = hashPassword;
+    }
+
+    await Users.update(updateFields, {
+      where: {
+        email: userEmail,
+      },
+    });
+
+    res.json({ success: true, msg: "Update Successful !!!" }); // Return success and message
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, msg: "Internal Server Error" }); // Return failure and message
+  }
+};

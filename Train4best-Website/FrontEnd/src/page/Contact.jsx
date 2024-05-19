@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Footer from "../Component/Footer";
 import Navbar from "../Component/Navbar";
 
 const ContactPages = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [msg, setMsg] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const Contacts = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/contacts", {
+        name,
+        email,
+        phone,
+        subject,
+        message,
+      });
+      setSuccess(true); // Set success to true on successful submission
+      setName("");
+      setEmail("");
+      setPhone("");
+      setSubject("");
+      setMessage("");
+      setMsg("");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+        setSuccess(false); // Set success to false on error
+      }
+    }
+  };
+
+  const handleCloseAlert = () => {
+    setSuccess(false);
+  };
+
+  const openLinkInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <>
-      <Navbar></Navbar>
-      {/* Body Section */}
+      <Navbar />
       <div className="container">
         <div className="C-head">
           <h1>Contact Us</h1>
@@ -14,33 +55,56 @@ const ContactPages = () => {
         <div className="d-flex justify-content-evenly mb-5">
           <div className="C-form">
             <form
-              className="d-flex flex-column gap-2 align-items-center"
-              action="/action_page.php"
+              className="d-flex flex-column gap-3 align-items-center"
+              onSubmit={Contacts}
             >
-              <input type="text" id="name" name="name" placeholder="Name" />
-              <input type="text" id="email" name="email" placeholder="Email" />
               <input
+                className="m-0"
                 type="text"
-                id="nomor"
-                name="nomor"
-                placeholder="No.Handphone"
+                id="Name"
+                name="Name"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
               <input
+                type="email"
+                id="Email"
+                name="Email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="tel"
+                id="Phone"
+                name="Phone"
+                placeholder="Phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <input
+                className="m-0"
                 type="text"
-                id="subject"
-                name="subject"
+                id="Subject"
+                name="Subject"
                 placeholder="Subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
               />
               <textarea
-                id="message"
-                name="message"
+                id="Message"
+                name="Message"
                 placeholder="Message"
                 className="msg-box"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               ></textarea>
-              <a>
-                <button className="C-button">Send Message</button>
-              </a>
+              <button type="submit" className="C-button">
+                Send Message
+              </button>
             </form>
+            {msg && <p className="error-message">{msg}</p>}
           </div>
           <div className="C-info">
             <h2>Get in Touch</h2>
@@ -68,17 +132,40 @@ const ContactPages = () => {
             </div>
             <h2>Follow Us</h2>
             <div className="C-followus d-flex gap-4 justify-content-center align-items-center mb-4">
-              <img src="../assets/image 21.png" alt="" />
-              <img
-                style={{ height: "11vh" }}
-                src="../assets/image 22.png"
-                alt=""
-              />
-              <img
-                style={{ height: "12vh" }}
-                src="../assets/image 23.png"
-                alt=""
-              />
+              <div
+                className="clickable"
+                onClick={() =>
+                  openLinkInNewTab(
+                    "https://www.linkedin.com/company/train4best-indonesia/"
+                  )
+                }
+              >
+                <img src="../assets/image 21.png" alt="LinkedIn" />
+              </div>
+              <div
+                className="clickable"
+                onClick={() =>
+                  openLinkInNewTab("https://www.facebook.com/Train4best")
+                }
+              >
+                <img
+                  style={{ height: "11vh" }}
+                  src="../assets/image 22.png"
+                  alt="Facebook"
+                />
+              </div>
+              <div
+                className="clickable"
+                onClick={() =>
+                  openLinkInNewTab("https://www.instagram.com/train4best/")
+                }
+              >
+                <img
+                  style={{ height: "12vh" }}
+                  src="../assets/image 23.png"
+                  alt="Instagram"
+                />
+              </div>
             </div>
             <div>
               <h2>Opening Hours</h2>
@@ -98,7 +185,7 @@ const ContactPages = () => {
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
+                referrerPolicy="no-referrer-when-downgrade"
                 className="C-maps"
               ></iframe>
               <p style={{ color: "white", fontSize: "20px" }}>
@@ -118,7 +205,15 @@ const ContactPages = () => {
           </div>
         </div>
       </div>
-      <Footer></Footer>
+      <Footer />
+      {success && (
+        <div className="popup">
+          <div className="popup-inner">
+            <h2>Message Sent Successfully!</h2>
+            <button onClick={handleCloseAlert}>Close</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

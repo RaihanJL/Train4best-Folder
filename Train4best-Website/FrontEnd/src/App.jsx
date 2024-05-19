@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Homepages from "./page/home";
 import AboutPages from "./page/About";
 import CatalogPages from "./page/Catalog";
@@ -19,10 +19,12 @@ import RegisterPage from "./page/register";
 import LoginPage from "./page/login";
 import LandingPage from "./page/landingPage";
 import PaymentcoursePage from "./page/paymentcourse";
+import ScrollToTop from "./Component/ScrollToTop";
 
 function App() {
   return (
     <>
+      <ScrollToTop /> {/* Add ScrollToTop here */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/Home" element={<Homepages />} />

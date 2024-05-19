@@ -40,27 +40,27 @@ const Navbar = () => {
       <nav className="">
         <div className="navbar mx-5 px-5 pt-4 pb-4">
           <div className="left-section">
-            <a href="/Home">
+            <Link to={"/Home"}>
               <img
                 className="left-image"
                 src="/assets/train4best-blue-no-bg.png"
                 alt="Train4best Logo"
               />
-            </a>
+            </Link>
           </div>
           <div className="middle-section">
             <ul className="middle-button">
               <li>
-                <a href="/About">About</a>
+                <Link to={"/About"}>About</Link>
               </li>
               <li>
-                <a href="/Catalog">Catalog</a>
+                <Link to={"/Catalog"}>Catalog</Link>
               </li>
               <li>
-                <a href="/Courselist">Courses</a>
+                <Link to={"/Courselist"}>Courses</Link>
               </li>
               <li>
-                <a href="/Contact">Contact</a>
+                <Link to={"/Contact"}>Contact</Link>
               </li>
             </ul>
           </div>
@@ -81,8 +81,12 @@ const Navbar = () => {
                 id="nav-dropdown-dark-example"
                 className="custom-dropdown"
               >
-                <NavDropdown.Item href="/Profile">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="/History">History</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/Profile">
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/History">
+                  History
+                </NavDropdown.Item>
                 <NavDropdown.Item onClick={Logout}>Log Out</NavDropdown.Item>
               </NavDropdown>
             </Nav>
