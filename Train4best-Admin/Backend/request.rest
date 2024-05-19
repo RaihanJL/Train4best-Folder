@@ -1,0 +1,42 @@
+GET http://localhost:8081/Admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjo0LCJuYW1lIjoiVGFyYWloYW4iLCJlbWFpbCI6InRhcmFpaGFuQGdtYWlsLmNvbSIsImlhdCI6MTcxNjEwNzE4NSwiZXhwIjoxNzE2MTA3MjA1fQ.TpXot199sMU4IoSnnbRj-yXDqj_TMzEJWTRUdO3_lYQ
+
+###
+POST http://localhost:8081/login
+Content-Type: application/json
+
+{
+    "email": "taraihan@gmail.com",
+    "password": "307"
+}
+
+###
+GET http://localhost:8081/catalog
+
+###
+DELETE http://localhost:8081/logout
+
+###
+POST http://localhost:8081/Admin
+Content-Type: application/json
+
+{
+    "name": "Taraihan",
+    "email": "taraihan@gmail.com",
+    "password": "307",
+    "confPassword": "307"
+}
+
+###
+POST http://localhost:8081/Admin
+Content-Type: application/json
+
+{
+    "name": "Taraihan2",
+    "email": "taraihan2@gmail.com",
+    "password": "301",
+    "confPassword": "307"
+}
+
+###
+GET http://localhost:8081/users
