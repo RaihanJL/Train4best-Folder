@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
 
@@ -7,17 +8,11 @@ const Userpage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8081/users")
+    axios.get("http://localhost:8081/users")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data);
+        setData(response.data);
         setLoading(false);
-        console.log(data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -36,15 +31,9 @@ const Userpage = () => {
 
   const handleDelete = async (id) => {
     try {
-      // Make a DELETE request to your API to delete the user with the specified id
-      await fetch(`http://localhost:8081/users/${id}`, {
-        method: "DELETE",
-      });
-
-      // Remove the deleted user from the data array
+      await axios.delete(`http://localhost:8081/users/${id}`);
       const updatedData = data.filter((user) => user.id !== id);
       setData(updatedData);
-
       console.log(`User with ID ${id} deleted successfully`);
     } catch (error) {
       console.error(`Error deleting user with ID ${id}:`, error);
@@ -52,11 +41,12 @@ const Userpage = () => {
   };
 
   const maskPassword = (password) => {
-    return password.length > 2
-      ? `${password.charAt(0)}${"*".repeat(
-          password.length - 2
-        )}${password.slice(-1)}`
-      : password;
+    if (password) {
+      return password.length > 2
+        ? `${password.charAt(0)}${"*".repeat(password.length - 2)}${password.slice(-1)}`
+        : password;
+    }
+    return ""; // Return empty string if password is undefined
   };
 
   return (
@@ -64,7 +54,6 @@ const Userpage = () => {
       <div className="container">
         <Navbar />
       </div>
-
       <div className="d-flex container justify-content-between align-items-start">
         <div>
           <Sidebar />

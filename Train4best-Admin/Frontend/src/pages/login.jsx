@@ -1,6 +1,29 @@
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Loginpage = () => {
+const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [msg, setMsg] = useState("");
+
+  const Auth = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8081/login", {
+        email: email,
+        password: password,
+      });
+      navigate("/dashboard");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
+  };
+
   return (
     <>
       <section className="login">
@@ -15,14 +38,17 @@ const Loginpage = () => {
                     alt="Train4Best Logo"
                   />
                 </div>
-                <form>
-                  <div className="container-forlogin mb-5">
-                    <label htmlFor="email">Email</label>
+                <form onSubmit={Auth}>
+                  <p>{msg}</p>
+                  <div className="container-forlogin">
+                    <label htmlFor="email">Email or Username</label>
                     <input
                       type="text"
                       placeholder="Enter Email"
                       name="email"
                       id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                     <label htmlFor="pw">Password</label>
@@ -31,17 +57,28 @@ const Loginpage = () => {
                       placeholder="Enter Password"
                       name="psw"
                       id="psw"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       required
                     />
+                    <div className="text-login">
+                      <div className="container-regist">
+                        <p>
+                          Don't have an account?{" "}
+                          <Link to={"/register"}>Register here.</Link>
+                        </p>
+                      </div>
+                      <div className="forgot-pw">
+                        <p>Forgot Password?</p>
+                      </div>
+                    </div>
                   </div>
-                </form>
-                <Link style={{ textDecoration: "none" }} to={"/dashboard"}>
                   <div className="btn-container">
                     <button type="submit" className="login-btn">
                       LOGIN
                     </button>
                   </div>
-                </Link>
+                </form>
               </div>
             </div>
           </div>
@@ -51,4 +88,4 @@ const Loginpage = () => {
   );
 };
 
-export default Loginpage;
+export default LoginPage;

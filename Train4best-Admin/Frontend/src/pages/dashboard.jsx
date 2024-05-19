@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import {
   BarChart,
   Bar,
@@ -15,6 +18,25 @@ import { format } from "date-fns";
 const DashboardPage = () => {
   const [monthlyData, setMonthlyData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [token, setToken] = useState("");
+  const [expire, setExpire] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => {
+    refreshToken();
+  }, []);
+
+  const refreshToken = async () => {
+    try {
+      const response = await axios.get("http://localhost:8081/token");
+      setToken(response.data.accessToken);
+      const decoded = jwtDecode(response.data.accessToken); // Use the named import
+      setName(decoded.name);
+      setExpire(decoded.exp);
+    } catch (error) {
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     fetch("http://localhost:8081/users")
@@ -60,7 +82,7 @@ const DashboardPage = () => {
         </div>
         <div>
           <h2 style={{ textAlign: "right", color: "#34478C" }}>
-            Welcome back, Admin
+            Welcome back, {name}
           </h2>
           <div
             style={{

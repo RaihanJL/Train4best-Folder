@@ -148,6 +148,109 @@ button:hover {
   border-color: black;
 }
 
+/* Register Page*/
+.register {
+  background: url(/assets/registloginbg.jpg);
+  background-size: cover;
+  height: 100vh;
+}
+
+.left-container {
+  background-color: #34478c;
+  width: 830px;
+  height: 100vh;
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.box-container {
+  background-color: rgb(252, 252, 252);
+  border-radius: 10px;
+  width: 550px;
+  height: 650px;
+  margin: auto; /* Center the box horizontally */
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.box-container .img-t4best {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  height: 8vh;
+}
+
+.container-register {
+  padding: 0 60px; /* Increase padding for better spacing */
+  background-color: white;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  color: #34478c;
+  border-radius: 10px;
+}
+
+/* Full-width input fields */
+input[type="text"] {
+  padding-left: 20px;
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 15px 0;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  background: #34478c;
+}
+
+input[type="password"] {
+  padding-left: 20px;
+  width: 100%;
+  padding: 15px;
+  margin: 1px 0 3px 0;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  background: #34478c;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.text-register {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  font-size: 11px;
+}
+
+.container-login {
+  font-size: 11px;
+}
+
+.forgot-pwd {
+  font-size: 11px;
+}
+
+.register-btn {
+  background-color: #1a3050;
+  color: #fafafa;
+  padding: 4px;
+  padding-left: 35px;
+  padding-right: 35px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  opacity: 0.9;
+}
+
+/* End of Register Page */
+
 .login {
   background: url(/assets/registloginbg.jpg);
   height: 100vh;

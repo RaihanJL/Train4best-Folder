@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
+import axios from "axios";
 
 const CatalogPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8081/catalog")
+    axios.get("http://localhost:8081/catalog")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data);
-        console.log(data);
+        const updatedData = response.data.map((item) => ({
+          ...item,
+          img_url: item.img_barang ? URL.createObjectURL(new Blob([new Uint8Array(item.img_barang.data)], { type: 'image/jpeg' })) : null,
+        }));
+        setData(updatedData);
       })
       .catch((error) => {
-        console.error("Error fetching data: ", error);
+        console.error("Error fetching data: ", error.response.data);
       });
   }, []);
 
@@ -32,9 +30,7 @@ const CatalogPage = () => {
           <Sidebar />
         </div>
         <div className="w-75">
-          <div>
-            <h2 className="text-center mb-2">Catalog</h2>
-          </div>
+          <h2 className="text-center mb-2">Catalog</h2>
           <div className="mt-2">
             {data.length > 0 ? (
               <table className="table">
@@ -51,14 +47,14 @@ const CatalogPage = () => {
                 </thead>
                 <tbody>
                   {data.map((item) => (
-                    <tr key={item.id_barang} className="data-catalog">
-                      <td>{item.id_barang}</td>
-                      <td>{item.img_barang.data}</td>
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>
+                        {item.img_url && <img src={item.img_url} alt={item.nama_barang} width="50" height="50" />}
+                      </td>
                       <td>{item.nama_barang}</td>
                       <td>{item.kategori_barang}</td>
-                      <td style={{ textAlign: "justify" }}>
-                        {item.desc_barang}
-                      </td>
+                      <td style={{ textAlign: "justify" }}>{item.desc_barang}</td>
                       <td>{item.tahun_terbit}</td>
                       <td>{item.harga_barang}</td>
                     </tr>
