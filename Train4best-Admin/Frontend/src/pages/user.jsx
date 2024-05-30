@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Navbar from "../component/Navbar";
-import Sidebar from "../component/sidebar";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Navbar from '../component/Navbar';
+import Sidebar from '../component/sidebar';
+import ConfirmationModal from '../component/ConfirmationModal'; // Import the modal component
 
 const Userpage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8081/users")
+    axios.get('http://localhost:8081/users')
       .then((response) => {
         setData(response.data);
         setLoading(false);
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching data: ", error);
+        console.error('Error fetching data: ', error);
         setLoading(false);
       });
   }, []);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, "0")}-${(
-      date.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}-${date.getFullYear()}`;
+    return `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
   };
 
   const handleDelete = async (id) => {
@@ -43,10 +42,27 @@ const Userpage = () => {
   const maskPassword = (password) => {
     if (password) {
       return password.length > 2
-        ? `${password.charAt(0)}${"*".repeat(password.length - 2)}${password.slice(-1)}`
+        ? `${password.charAt(0)}${'*'.repeat(password.length - 2)}${password.slice(-1)}`
         : password;
     }
-    return ""; // Return empty string if password is undefined
+    return ''; // Return empty string if password is undefined
+  };
+
+  const handleShowModal = (id) => {
+    setSelectedUserId(id);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedUserId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedUserId) {
+      handleDelete(selectedUserId);
+      handleCloseModal();
+    }
   };
 
   return (
@@ -86,7 +102,7 @@ const Userpage = () => {
                       <td>{maskPassword(user.password)}</td>
                       <td>{formatDate(user.createdAt)}</td>
                       <td>
-                        <button onClick={() => handleDelete(user.id)}>
+                        <button onClick={() => handleShowModal(user.id)}>
                           Delete
                         </button>
                       </td>
@@ -100,6 +116,11 @@ const Userpage = () => {
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleConfirm={handleConfirmDelete}
+      />
     </>
   );
 };
