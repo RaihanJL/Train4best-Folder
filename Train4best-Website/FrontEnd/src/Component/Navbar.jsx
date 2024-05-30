@@ -54,10 +54,7 @@ const Navbar = () => {
                 <Link to={"/About"}>About</Link>
               </li>
               <li>
-                <Link to={"/Catalog"}>Catalog</Link>
-              </li>
-              <li>
-                <Link to={"/Courselist"}>Courses</Link>
+                <Link to={"/CatalogBundle"}>Catalog / Courses</Link>
               </li>
               <li>
                 <Link to={"/Contact"}>Contact</Link>

@@ -65,7 +65,7 @@ const LoginPage = () => {
                       <div className="container-regist">
                         <p>
                           Don't have an account?{" "}
-                          <Link to={"/register"}>Register here.</Link>
+                          <Link to={"/"}>Register here.</Link>
                         </p>
                       </div>
                       <div className="forgot-pw">

@@ -1,92 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Component/Navbar";
 import Footer from "../Component/Footer";
 import CarouselA from "../Component/Carousel";
 import "../styles/Catalogpage.css"; // Import CSS file for animations
 import { Link } from "react-router-dom";
-
-const products = [
-  {
-    id: 1,
-    title: "GOOD TO GREAT",
-    images: "/assets/mini1.png",
-    price: "$27",
-    url: "/Detailcatalog",
-  },
-  {
-    id: 2,
-    title: "A Love & Beyond",
-    images: "/assets/mini2.png",
-    price: "$15",
-  },
-  {
-    id: 3,
-    title: "BATTLE OF INK AND ICE",
-    images: "/assets/mini3.png",
-    price: "$27",
-  },
-  {
-    id: 4,
-    title: "THE PERFECT CUPCAKE",
-    images: "/assets/mini4.png",
-    price: "$5.64",
-  },
-  {
-    id: 5,
-    title: "Begin Again",
-    images: "/assets/mini5.png",
-    price: "$11.99",
-  },
-  {
-    id: 6,
-    title: "Cooking the Books",
-    images: "/assets/mini6.png",
-    price: "$15",
-  },
-  {
-    id: 7,
-    title: "Crossing The Charm",
-    images: "/assets/mini7.png",
-    price: "$15",
-  },
-  {
-    id: 8,
-    title: "Practical Design Discovery",
-    images: "/assets/mini8.png",
-    price: "$15",
-  },
-];
-
-const itemsPerPage = 8; // Number of products per page
+import axios from "axios";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 const CatalogPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [direction, setDirection] = useState("forward");
+  const [data, setData] = useState([]);
+  const [courses, setCourses] = useState([]);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/catalog")
+      .then((response) => {
+        console.log("Data dari server:", response.data);
+        const updatedData = response.data.map((item) => ({
+          ...item,
+          img_url: item.img_barang
+            ? `data:image/jpeg;base64,${item.img_barang}`
+            : null,
+        }));
+        setData(updatedData);
+      })
+      .catch((error) => {
+        console.error(
+          "Error fetching data: ",
+          error.response?.data || error.message
+        );
+      });
+  }, []);
 
-  const paginate = (pageNumber) => {
-    setDirection(pageNumber > currentPage ? "forward" : "backward");
-    setCurrentPage(pageNumber);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/courses")
+      .then((response) => {
+        console.log("Data dari server:", response.data);
+        const updatedCourses = response.data.map((course) => ({
+          ...course,
+          img_url: course.img_skema
+            ? `data:image/jpeg;base64,${course.img_skema}`
+            : null,
+        }));
+        setCourses(updatedCourses);
+      })
+      .catch((error) => {
+        console.error(
+          "Error fetching data: ",
+          error.response?.data || error.message
+        );
+      });
+  }, []);
+
+  const handleSelectCertification = (course) => {
+    // Implementasi yang sesuai untuk menangani pemilihan sertifikasi
+    console.log("Selected course:", course);
   };
 
   return (
     <>
       <Navbar />
       <div>
-        <div className=" mt-5">
+        <div className="mt-5">
           <h1
             className="mb-5"
             style={{
               textAlign: "center",
               color: "#34478c",
               fontWeight: "bold",
-              fontSize: "48px",
+              fontSize: "60px",
             }}
           >
-            Products of the Month
+            Catalog
           </h1>
           <CarouselA />
         </div>
@@ -101,66 +88,158 @@ const CatalogPage = () => {
           >
             Our Products
           </h1>
-          <div
-            className={`d-flex flex-wrap justify-content-evenly mt-5 ${
-              direction === "forward" ? "slide-in-right" : "slide-in-left"
-            }`}
-          >
-            {currentItems.map((product) => (
-              <div className="aboutcard d-grid gap-3" key={product.id}>
-                <div className="aboutcard-container ">
-                  <div className="catalog-card ">
-                    <Link to={product.url}>
+          <div className="row mt-4">
+            {data.map((item) => (
+              <div className="col-md-4 mb-4" key={item.id}>
+                <div className="d-flex flex-column align-items-center">
+                  <Link to={`/Detailcatalog/${item.id}`}>
+                    {item.img_url && (
                       <img
-                        src={product.images}
-                        className="img-fluid catalog-img"
-                        alt="Product image"
+                        src={item.img_url}
+                        className="card-img-top"
+                        alt={item.nama_barang}
                       />
-                    </Link>
-                    <div className="d-flex flex-column align-items-center">
-                      <h2 className="text-black fs-5 fw-bold catalog-text mt-3">
-                        {product.title}
-                      </h2>
-                      <h2 className="text-black fs-6 fw-bold catalog-text mb-5">
-                        {product.price}
-                      </h2>
-                    </div>
+                    )}
+                  </Link>
+
+                  <div className="text-center">
+                    <h5>{item.nama_barang}</h5>
+                    <h5>Rp.{item.harga_barang}</h5>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <Pagination
-            itemsPerPage={itemsPerPage}
-            totalItems={products.length}
-            paginate={paginate}
-          />
+        </div>
+        <div style={{ border: "1px solid black" }}></div>
+      </div>
+      <div>
+        <div className="container home-C d-flex justify-content-center flex-column gap-4">
+          <div className="first-text mt-5">
+            <h1 style={{ textAlign: "center" }}>Courses (E-learning)</h1>
+          </div>
+          <div></div>
+        </div>
+
+        <div>
+          <div className="title-training">
+            <h1>
+              <u>Training Categories</u>
+            </h1>
+          </div>
+
+          <div className="container-training">
+            <div className="box-training">
+              <h5>
+                <b style={{ fontSize: "large" }}>TELEKOMUNIKASI</b>
+              </h5>
+              <p>
+                Menawarkan pelatihan-pelatihan dalam <br />
+                bidang telekomunikasi yang dibutuhkan <br />
+                untuk menguatkan skill dan kompetensi. <br />
+                Terdapat berbagai skema pelatihan <br />
+                dengan tenaga pengajar profesional.
+              </p>
+            </div>
+            <div className="box-training">
+              <h5>
+                <b style={{ fontSize: "large" }}>IT / KOMPUTER</b>
+              </h5>
+              <p>
+                Menawarkan pelatihan-pelatihan dalam <br />
+                bidang IT / Komputer yang dibutuhkan <br />
+                untuk menguatkan skill dan kompetensi. <br />
+                Terdapat berbagai skema pelatihan <br />
+                dengan tenaga pengajar profesional.
+              </p>
+            </div>
+            <div className="box-training">
+              <h5>
+                <b style={{ fontSize: "large" }}>WEBINAR</b>
+              </h5>
+              <p>
+                Menawarkan berbagai webinar untuk <br />
+                menambah pengetahuan dan wawasan <br />
+                anda dengan tema-tema yang menarik <br />
+                untuk dibahas serta disampaikan oleh <br />
+                pembicara ahli di bidangnya.
+              </p>
+            </div>
+          </div>
+
+          <div className="container-training">
+            <div className="box-training">
+              <h5>
+                <b style={{ fontSize: "large" }}>SOFT SKILL</b>
+              </h5>
+              <p>
+                Menawarkan pelatihan-pelatihan dalam <br />
+                bidang soft skill yang dibutuhkan <br />
+                untuk menguatkan skill dan kompetensi. <br />
+                Terdapat berbagai skema pelatihan <br />
+                dengan tenaga pengajar profesional.
+              </p>
+            </div>
+            <div className="box-training">
+              <h5>
+                <b style={{ fontSize: "large" }}>PAJAK</b>
+              </h5>
+              <p>
+                Menawarkan pelatihan-pelatihan dalam <br />
+                bidang perpajakan yang dibutuhkan <br />
+                untuk menguatkan skill dan kompetensi. <br />
+                Terdapat berbagai skema pelatihan <br />
+                dengan tenaga pengajar profesional.
+              </p>
+            </div>
+            <div className="box-training">
+              <h5>
+                <b style={{ fontSize: "large" }}>LEARNING MANAGEMENT SYSTEM</b>
+              </h5>
+              <p>
+                Laman e-learning Train4best untuk <br />
+                mempermudahkan akses pembelajaran <br /> atau pelatihan secara
+                daring.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="container-all-courses text-center mt-5">
+          <h1>
+            <u>Certification</u>
+          </h1>
+          <div className="d-flex flex-column align-items-center gap-5 justify-content-between mt-3">
+            {courses.map((course) => (
+              <div
+                className="container-skema d-flex align-items-center "
+                key={course.id}
+              >
+                {course.img_url && (
+                  <img
+                    src={course.img_url}
+                    alt={course.nama_skema}
+                    style={{
+                      height: "80px",
+                      marginRight: "10px",
+                    }}
+                  />
+                )}
+                <DropdownButton
+                  className="drop-btn-skema"
+                  id="dropdown-basic-button"
+                  title={course.nama_skema}
+                  variant="secondary"
+                >
+                  {/* Dropdown content can go here */}
+                </DropdownButton>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <Footer />
     </>
-  );
-};
-
-const Pagination = ({ itemsPerPage, totalItems, paginate }) => {
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
-  return (
-    <nav>
-      <ul className="pagination justify-content-center mt-4">
-        {pageNumbers.map((number) => (
-          <li key={number} className="page-item">
-            <button onClick={() => paginate(number)} className="page-link">
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
   );
 };
 

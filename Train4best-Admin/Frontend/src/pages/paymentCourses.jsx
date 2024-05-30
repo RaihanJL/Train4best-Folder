@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
+import axios from "axios";
 
-const PaymentCoursepage = () => {
+const PaymentCatalogpage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8081/paymentCourse")
+    axios
+      .get("http://localhost:8081/PaymentCour")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data);
-        console.log(data);
+        const updatedData = response.data.map((item) => ({
+          ...item,
+          receipt_url: item.receipt_payment
+            ? URL.createObjectURL(
+                new Blob([new Uint8Array(item.receipt_payment.data)], {
+                  type: "image/jpeg",
+                })
+              )
+            : null,
+        }));
+        setData(updatedData);
       })
       .catch((error) => {
-        console.error("Error fetching data: ", error);
+        console.error(
+          "Error fetching data: ",
+          error.response?.data || error.message
+        );
       });
   }, []);
 
@@ -47,7 +55,7 @@ const PaymentCoursepage = () => {
         </div>
         <div className="w-75">
           <div>
-            <h2 className="text-center mb-2 ">Payment Course</h2>
+            <h2 className="text-center mb-2">Payment Catalog</h2>
           </div>
           <div className="mt-2">
             {data.length > 0 ? (
@@ -56,7 +64,7 @@ const PaymentCoursepage = () => {
                   <tr>
                     <th>ID Payment</th>
                     <th>Email</th>
-                    <th>ID Course</th>
+                    <th>ID Barang</th>
                     <th>Payment Method</th>
                     <th>Transaction Date</th>
                     <th>Receipt</th>
@@ -64,13 +72,22 @@ const PaymentCoursepage = () => {
                 </thead>
                 <tbody>
                   {data.map((payment) => (
-                    <tr key={payment.id_payment_course}>
-                      <td>{payment.id_payment_course}</td>
+                    <tr key={payment.id}>
+                      <td>{payment.id}</td>
                       <td>{payment.email_user}</td>
-                      <td>{payment.id_course}</td>
+                      <td>{payment.id_barang}</td>
                       <td>{payment.payment_method}</td>
-                      <td>{formatDate(payment.transaction_date)}</td>
-                      <td>{payment.receipt_payment.data}</td>
+                      <td>{formatDate(payment.createdAt)}</td>
+                      <td>
+                        {payment.receipt_url && (
+                          <img
+                            src={payment.receipt_url}
+                            alt={`Receipt for payment ${payment.id}`}
+                            width="50"
+                            height="auto"
+                          />
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -85,4 +102,4 @@ const PaymentCoursepage = () => {
   );
 };
 
-export default PaymentCoursepage;
+export default PaymentCatalogpage;

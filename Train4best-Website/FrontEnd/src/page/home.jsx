@@ -122,7 +122,7 @@ function Homepages() {
               Here are some of <br />
               our products
             </h1>
-            <Link to={"/Catalog"}>
+            <Link to={"/CatalogBundle"}>
               <button className="fs-5 fw-bold">Check it out now &gt;</button>
             </Link>
           </div>

@@ -12,7 +12,7 @@ const CoursesPage = () => {
       <Navbar />
       <div className="back-container">
         <div className="">
-          <Link to={"/Courselist"}>
+          <Link to={"/CatalogBundle"}>
             <img src={back}></img>
           </Link>
         </div>

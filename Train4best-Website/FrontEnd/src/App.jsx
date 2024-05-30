@@ -30,8 +30,12 @@ function App() {
         <Route path="/Home" element={<Homepages />} />
         <Route path="/About" element={<AboutPages />} />
         <Route path="/Contact" element={<ContactPages />} />
-        <Route path="/Catalog" element={<CatalogPages />} />
-        <Route path="/Detailcatalog" element={<CatalogDetailpages />} />
+        <Route path="/CatalogBundle" element={<CatalogPages />} />
+        <Route
+          path="/Detailcatalog/:id"
+          element={<CatalogDetailpages />}
+        />{" "}
+        {/* Update this line */}
         <Route path="/Profile" element={<ProfilePage />} />
         <Route path="/PaymentOption" element={<PaymentOptionPage />} />
         <Route path="/Payment" element={<Paymentpage />} />

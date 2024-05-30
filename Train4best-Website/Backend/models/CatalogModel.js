@@ -6,6 +6,11 @@ const { DataTypes } = Sequelize;
 const Catalog = db.define(
   "Catalog",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     img_barang: {
       type: DataTypes.BLOB,
     },

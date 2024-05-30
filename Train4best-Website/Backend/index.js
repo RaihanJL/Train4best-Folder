@@ -4,7 +4,6 @@ import router from "./routes/index.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import Catalog from "./models/CatalogModel.js";
 
 dotenv.config();
 const app = express();

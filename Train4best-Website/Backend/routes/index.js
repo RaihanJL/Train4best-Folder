@@ -8,12 +8,14 @@ import {
 } from "../controllers/Users.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
-import { getBarang } from "../controllers/Catalog.js";
+import { getBarang, getProductDetails } from "../controllers/Catalog.js"; // Import getProductDetails
 import { Contacts, getContact } from "../controllers/Contact.js";
+import { getElearning } from "../controllers/E-Learning.js";
 
 const router = express.Router();
 
 // Catalog routes
+router.get("/catalog/:id", getProductDetails); // Add route for getProductDetails
 router.get("/catalog", getBarang);
 
 // User routes
@@ -29,5 +31,8 @@ router.delete("/logout", Logout);
 // Contact routes
 router.get("/contacts", getContact);
 router.post("/contacts", Contacts);
+
+//Courses routes
+router.get("/Courses", getElearning);
 
 export default router;

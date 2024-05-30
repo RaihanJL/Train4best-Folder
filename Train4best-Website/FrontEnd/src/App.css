@@ -774,6 +774,10 @@ footer {
 }
 
 /* Detail Catalog section */
+.diff-box {
+  display: flex;
+  flex-direction: column;
+}
 .back-container {
   padding-top: 20px;
   background-color: #34478c;
@@ -781,9 +785,6 @@ footer {
   padding-left: 5rem;
 }
 
-.text-box {
-  width: 85%;
-}
 .desc-text {
   text-align: justify;
   font-size: 19px;
@@ -1361,4 +1362,30 @@ input[type="submit"]:hover {
   right: 10px;
   cursor: pointer;
   font-size: 20px;
+}
+
+/* drop-btn skema */
+.drop-btn-skema button {
+  background-color: #fff !important;
+  color: #34478c !important;
+  width: 70vh !important;
+  height: 10vh !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.drop-btn-skema button:hover {
+  box-shadow: none !important;
+}
+.container-skema {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  transition: 0.15s;
+}
+.container-skema:hover {
+  box-shadow: 2px 2px 17px 0px rgba(52, 71, 140, 0.75) !important;
+  -webkit-box-shadow: 2px 2px 17px 0px rgba(52, 71, 140, 0.75) !important;
+  -moz-box-shadow: 2px 2px 17px 0px rgba(52, 71, 140, 0.75) !important;
 }
