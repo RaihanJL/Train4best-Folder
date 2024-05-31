@@ -22,10 +22,8 @@ function Homepages() {
       const response = await axios.get("http://localhost:5000/token", {
         withCredentials: true, // Ensure cookies are sent with the request
       });
-      console.log("Token response:", response.data);
       setToken(response.data.accessToken);
       const decoded = jwtDecode(response.data.accessToken);
-      console.log("Decoded token:", decoded);
       setName(decoded.name);
       setExpire(decoded.exp);
       fetchCatalogItems(response.data.accessToken);
@@ -42,8 +40,6 @@ function Homepages() {
           Authorization: `Bearer ${token}`,
         },
       });
-      // Handle the catalog items as needed
-      console.log("Catalog items:", response.data);
     } catch (error) {
       console.error("Failed to fetch catalog items:", error);
     }
@@ -152,7 +148,7 @@ function Homepages() {
               </div>
             </div>
             <div>
-              <Link to={"/Courselist"}>
+              <Link to={"/CatalogBundle"}>
                 <button
                   style={{ marginTop: "20px" }}
                   className="crs-button fw-bold"

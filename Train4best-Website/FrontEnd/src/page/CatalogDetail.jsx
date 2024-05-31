@@ -62,9 +62,13 @@ const CatalogDetailpages = () => {
                       Rp. {product.harga_barang}
                     </p>
                   </div>
-                  <Link to="/PaymentOption">
-                    <button className="pe-5 px-5 fw-bold">Buy Now</button>
-                  </Link>
+                  <div>
+                    {product && product.id && (
+                      <Link to={`/Payment/${product.id}`}>
+                        <button className="pe-5 px-5 fw-bold">Buy Now</button>
+                      </Link>
+                    )}
+                  </div>
                 </div>
                 <p className="desc-text">{product.desc_barang}</p>
               </div>

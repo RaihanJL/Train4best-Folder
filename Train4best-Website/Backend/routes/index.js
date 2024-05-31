@@ -11,6 +11,7 @@ import { refreshToken } from "../controllers/RefreshToken.js";
 import { getBarang, getProductDetails } from "../controllers/Catalog.js"; // Import getProductDetails
 import { Contacts, getContact } from "../controllers/Contact.js";
 import { getElearning } from "../controllers/E-Learning.js";
+import { PaymentCatalog, getPayment, getPaymentDetails } from "../controllers/Payment.js"; // Import getPaymentDetails
 
 const router = express.Router();
 
@@ -34,5 +35,10 @@ router.post("/contacts", Contacts);
 
 //Courses routes
 router.get("/Courses", getElearning);
+
+//Payment routes
+router.get("/payment", getPayment);
+router.get("/payment/:id", getPaymentDetails); // Add route for getPaymentDetails
+router.post("/payment", PaymentCatalog);
 
 export default router;

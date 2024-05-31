@@ -32,6 +32,7 @@ export const getProductDetails = async (req, res) => {
     const product = await Catalog.findOne({
       where: { id: productId },
       attributes: [
+        "id",
         "img_barang",
         "nama_barang",
         "kategori_barang",

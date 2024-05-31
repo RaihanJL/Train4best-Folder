@@ -853,6 +853,9 @@ input[type="submit"]:hover {
   box-shadow: 0px 0px 2px -3px #34478c, 0px 0px 16px -3px #34478c;
 }
 
+.input-text {
+  background: #fff !important;
+}
 /* Payment */
 
 .img-border {
@@ -869,78 +872,86 @@ input[type="submit"]:hover {
   background: rgb(216, 216, 216);
 }
 
-/* payment section */
-
-.blue-box {
-  width: 651px;
-  height: 263px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: #34478c;
-  padding: 20px 50px;
-}
-.payment-info {
-  justify-content: start;
-  font-size: 32px;
-  color: white;
-}
-.payment-info p:first-child {
-  width: 150px; /* Adjust this width as needed */
-}
-
-.lines {
-  border: 2px solid white;
-  margin: 0;
-  margin-bottom: 15px;
-}
-.blue-box-2 {
-  padding: 15px 50px;
-  width: 651px;
-  height: 160px;
-  border-radius: 10px;
-  flex-shrink: 0;
-  background: #34478c;
-}
-
-.payment-info2 {
-  justify-content: start;
-  font-size: 32px;
-  color: white;
-}
-.payment-info2 p:first-child {
-  width: 280px; /* Adjust this width as needed */
-}
-.blue-box3 {
-  width: 1155px;
-  height: 160px;
-  border-radius: 10px;
-  flex-shrink: 0;
-  background: #34478c;
-  padding: 15px 70px;
-}
-.payment-info3 {
-  justify-content: start;
-  font-size: 32px;
-  color: white;
-}
-.blue-box4 {
+/* payment.css */
+.container {
   margin-top: 20px;
-  width: 1155px;
-  height: 416px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  padding: 20px;
-  background: #34478c;
 }
-.payment-info4 {
+
+.C-head {
   text-align: center;
-  font-size: 32px;
-  color: white;
+  margin-bottom: 20px;
+}
+
+.C-form {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #34478c;
+}
+
+label {
   font-weight: bold;
 }
-.button-status {
-  margin-left: 70px;
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #34478c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
+
+.submit-button:hover {
+  background-color: #2c3e70;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.popup-inner {
+  text-align: center;
+}
+
+.popup-inner button {
+  padding: 8px 16px;
+  background-color: #34478c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-inner button:hover {
+  background-color: #2c3e70;
+}
+
 
 /* History Section */
 .history-background {

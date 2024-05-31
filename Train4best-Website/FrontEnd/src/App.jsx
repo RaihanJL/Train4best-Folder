@@ -38,7 +38,7 @@ function App() {
         {/* Update this line */}
         <Route path="/Profile" element={<ProfilePage />} />
         <Route path="/PaymentOption" element={<PaymentOptionPage />} />
-        <Route path="/Payment" element={<Paymentpage />} />
+        <Route path="/Payment/:id" element={<Paymentpage />} />
         <Route path="/History" element={<HistoryPage />} />
         <Route path="/donePayment" element={<DonepaymentPage />} />
         <Route path="/CoursesDetail" element={<CoursesDetailPage />} />

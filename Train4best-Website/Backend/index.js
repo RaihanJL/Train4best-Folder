@@ -4,6 +4,7 @@ import router from "./routes/index.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import Payment from "./models/PaymentModel.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,23 @@ try {
 } catch (error) {
   console.error(error);
 }
+
+import multer from "multer";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({ dest: "uploads/" }); // Assuming you want to store files in the 'uploads/' directory
+app.use(upload.single("receipt"));
 
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(cookieParser());

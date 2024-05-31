@@ -215,24 +215,26 @@ const CatalogPage = () => {
                 className="container-skema d-flex align-items-center "
                 key={course.id}
               >
-                {course.img_url && (
-                  <img
-                    src={course.img_url}
-                    alt={course.nama_skema}
-                    style={{
-                      height: "80px",
-                      marginRight: "10px",
-                    }}
-                  />
-                )}
-                <DropdownButton
-                  className="drop-btn-skema"
-                  id="dropdown-basic-button"
-                  title={course.nama_skema}
-                  variant="secondary"
-                >
-                  {/* Dropdown content can go here */}
-                </DropdownButton>
+                <Link to={"/Courses"}>
+                  {course.img_url && (
+                    <img
+                      src={course.img_url}
+                      alt={course.nama_skema}
+                      style={{
+                        height: "80px",
+                        marginRight: "10px",
+                      }}
+                    />
+                  )}
+                  <DropdownButton
+                    className="drop-btn-skema"
+                    id="dropdown-basic-button"
+                    title={course.nama_skema}
+                    variant="secondary"
+                  >
+                    {/* Dropdown content can go here */}
+                  </DropdownButton>
+                </Link>
               </div>
             ))}
           </div>
