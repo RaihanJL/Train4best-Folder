@@ -54,7 +54,9 @@ const DonepaymentPage = () => {
           <div className="d-flex justify-content-between align-items-center">
             <div className="d-flex gap-3 align-items-center">
               <img src={bookMini} alt="Book"></img>
-              <p style={{ color: "white", fontSize: "24px" }}>Good To Great</p>
+              <p style={{ color: "white", fontSize: "24px" }}>
+                {paymentData.namaBarang}
+              </p>
             </div>
             <p style={{ fontSize: "24px", fontWeight: "bold", color: "white" }}>
               Rp.{paymentData.price}

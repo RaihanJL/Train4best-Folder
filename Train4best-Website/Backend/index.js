@@ -4,6 +4,7 @@ import router from "./routes/index.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import multer from "multer";
 import Payment from "./models/PaymentModel.js";
 
 dotenv.config();
@@ -15,8 +16,6 @@ try {
 } catch (error) {
   console.error(error);
 }
-
-import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -37,6 +36,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(router);
+await Payment.sync();
 
 // Endpoint to fetch image URLs from database
 app.get("/images", async (req, res) => {

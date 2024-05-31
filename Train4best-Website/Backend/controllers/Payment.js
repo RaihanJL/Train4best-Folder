@@ -22,6 +22,7 @@ export const getPayment = async (req, res) => {
     const payments = await Payment.findAll({
       attributes: [
         "id",
+        "namaBarang",
         "name",
         "email",
         "price",
@@ -62,7 +63,7 @@ export const PaymentCatalog = async (req, res) => {
   }
 
   try {
-    const catalog = await Catalog.findOne({ where: { id: catalogId } });
+    const catalog = await Catalog.findByPk(catalogId);
     if (!catalog) {
       return res.status(404).json({ msg: "Catalog item not found" });
     }
@@ -72,6 +73,7 @@ export const PaymentCatalog = async (req, res) => {
       name,
       email,
       paymentCode,
+      namaBarang: catalog.nama_barang,
       price: catalog.harga_barang,
       paymentMethod,
       transactionDate,

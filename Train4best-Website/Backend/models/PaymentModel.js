@@ -11,6 +11,9 @@ const Payment = db.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    namaBarang: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

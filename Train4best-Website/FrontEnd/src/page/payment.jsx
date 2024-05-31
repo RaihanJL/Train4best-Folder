@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom"; // Menggunakan useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Component/Navbar";
 import Footer from "../Component/Footer";
 import { jwtDecode } from "jwt-decode";
@@ -12,9 +12,10 @@ const generatePaymentCode = () => {
 
 const PaymentPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Menggunakan useNavigate
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
   const [paymentCode, setPaymentCode] = useState(generatePaymentCode());
   const [price, setPrice] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("BCA");
@@ -22,6 +23,7 @@ const PaymentPage = () => {
     new Date().toISOString().split("T")[0]
   );
   const [receipt, setReceipt] = useState(null);
+  const [namaBarang, setNamaBarang] = useState("");
 
   useEffect(() => {
     refreshToken();
@@ -46,6 +48,7 @@ const PaymentPage = () => {
         const response = await axios.get(`http://localhost:5000/catalog/${id}`);
         const product = response.data;
         setPrice(product.harga_barang);
+        setNamaBarang(product.nama_barang);
       } catch (error) {
         console.error("Failed to fetch product details", error);
       }
@@ -77,8 +80,7 @@ const PaymentPage = () => {
       setEmail("");
       setPaymentCode(generatePaymentCode());
       setReceipt(null);
-      // Redirect to next page after successful submission
-      navigate("/donePayment"); // Menggunakan navigate
+      navigate("/donePayment");
     } catch (error) {
       console.error("Failed to submit payment", error);
     }
@@ -119,6 +121,15 @@ const PaymentPage = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+              <label htmlFor="namaBarang">Nama Barang:</label>
+              <input
+                id="namaBarang"
+                className="form-input"
+                type="text"
+                placeholder="Enter the product name"
+                value={namaBarang}
+                readOnly
               />
               <label htmlFor="paymentCode">Payment Code:</label>
               <input
