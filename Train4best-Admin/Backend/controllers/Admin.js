@@ -3,6 +3,8 @@ import Users from "../models/Users.js";
 import Barang from "../models/Barang.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import fs from 'fs';
+import path from 'path';
 
 export const getAdmin = async(req, res) => {
     try{
@@ -26,6 +28,16 @@ export const getUsers = async(req, res) => {
     }
 }
 
+export const deleteUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await Users.destroy({ where: { id: id } });
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+  };
+
 export const getBarangs = async (req, res) => {
     try {
         const barangs = await Barang.findAll({
@@ -37,6 +49,62 @@ export const getBarangs = async (req, res) => {
         res.status(500).json({ message: "Error retrieving barang" });
     }
 };
+
+export const deleteCatalogItem = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await Barang.destroy({ where: { id: id } });
+      res.status(200).json({ message: 'Catalog item deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting catalog item', error: error.message });
+    }
+  };
+
+  export const updateCatalogItem = async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log("Received update request for item ID: ", id);
+      console.log("Request body: ", req.body);
+  
+      const { nama_barang, kategori_barang, desc_barang, tahun_terbit, harga_barang } = req.body;
+      let img_barang = null;
+  
+      if (req.file && req.file.path) {
+        console.log("Image uploaded: ", req.file.path);
+        img_barang = fs.readFileSync(req.file.path);
+        fs.unlinkSync(req.file.path); // Hapus file setelah membacanya
+      }
+  
+      const updatedFields = {};
+      
+      if (nama_barang) {
+        updatedFields.nama_barang = nama_barang;
+      }
+      if (kategori_barang) {
+        updatedFields.kategori_barang = kategori_barang;
+      }
+      if (desc_barang) {
+        updatedFields.desc_barang = desc_barang;
+      }
+      if (tahun_terbit) {
+        updatedFields.tahun_terbit = tahun_terbit;
+      }
+      if (harga_barang) {
+        updatedFields.harga_barang = harga_barang;
+      }
+      if (img_barang) {
+        updatedFields.img_barang = img_barang;
+      }
+  
+      await Barang.update(updatedFields, { where: { id } });
+      res.status(200).json({ message: 'Item updated successfully' });
+    } catch (error) {
+      console.error("Error updating item: ", error);
+      res.status(500).json({ message: 'Error updating item', error: error.message });
+    }
+  };
+  
+  
 
 // Menambahkan barang baru
 export const createBarang = async (req, res) => {

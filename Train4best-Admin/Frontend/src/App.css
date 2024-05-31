@@ -123,7 +123,7 @@ body {
 button {
   border-radius: 5px !important;
   border: none;
-  background-color: #1a3050;
+  background-color: #dc3545;
   color: white;
   font-size: 16px !important;
   transition: all 0.5s;
@@ -353,3 +353,81 @@ input[type="password"]:focus {
   outline: none;
 }
 /* End of Login Page */
+
+/* pop up edit catalog */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Tambahkan indeks z untuk menempatkan pop-up di atas konten lain */
+}
+
+.popup-inner {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  width: 50%;
+  max-width: 600px; /* Tentukan lebar maksimum pop-up */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Tambahkan bayangan untuk efek 3D */
+}
+
+.popup-inner h2 {
+  margin-top: 0;
+}
+
+.popup-inner form {
+  margin-top: 20px;
+}
+
+.popup-inner label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.popup-inner input[type="text"],
+.popup-inner input[type="file"],
+.popup-inner textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.popup-inner textarea {
+  resize: vertical; /* Izinkan pengguna untuk mengubah ukuran vertikal textarea */
+}
+
+.popup-inner button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.popup-inner button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.popup-inner button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+.popup-inner img {
+  display: block;
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+}
