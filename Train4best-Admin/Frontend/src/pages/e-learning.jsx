@@ -2,33 +2,125 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/sidebar";
 import axios from "axios";
+import ConfirmDeleteModal from "../component/ConfDelCourse";
+import EditCourse from "../component/EditCourse";
+import AddCourse from "../component/AddCourse";
 
 const Elearningpage = () => {
   const [data, setData] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [itemToEdit, setItemToEdit] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/Courses")
-      .then((response) => {
-        const updatedData = response.data.map((item) => ({
-          ...item,
-          img_url: item.img_skema
-            ? URL.createObjectURL(
-                new Blob([new Uint8Array(item.img_skema.data)], {
-                  type: "image/jpeg",
-                })
-              )
-            : null,
-        }));
-        setData(updatedData);
-      })
-      .catch((error) => {
-        console.error(
-          "Error fetching data: ",
-          error.response?.data || error.message
-        );
-      });
+    fetchCourses();
   }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get("http://localhost:8081/Courses");
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8081/Courses/${id}`);
+      setData(data.filter((item) => item.id !== id));
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting item: ", error);
+    }
+  };
+
+  const handleShowDeleteModal = (item) => {
+    setItemToDelete(item);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setItemToDelete(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (itemToDelete) {
+      handleDelete(itemToDelete.id);
+    }
+  };
+
+  const handleShowEditModal = (item) => {
+    setItemToEdit(item);
+    setShowEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setItemToEdit(null);
+  };
+
+  const handleEditSubmit = async (updatedItem) => {
+    try {
+      const formData = new FormData();
+      formData.append('nama_skema', updatedItem.nama_skema);
+      if (updatedItem.img_skema) {
+        formData.append('img_skema', updatedItem.img_skema);
+      }
+
+      const response = await axios.put(`http://localhost:8081/Courses/${updatedItem.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const updatedItemFromResponse = response.data;
+
+      const updatedData = data.map((item) => (
+        item.id === updatedItem.id ? { 
+          ...item, 
+          ...updatedItemFromResponse
+        } : item
+      ));
+      setData(updatedData);
+      setShowEditModal(false);
+    } catch (error) {
+      console.error("Error updating item: ", error);
+    }
+  };
+
+  const handleShowAddModal = () => {
+    setShowAddModal(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+  };
+
+  const handleAddSubmit = async (newItem) => {
+    try {
+      const formData = new FormData();
+      formData.append('nama_skema', newItem.nama_skema);
+      if (newItem.img_skema) {
+        formData.append('img_skema', newItem.img_skema);
+      }
+
+      const response = await axios.post(`http://localhost:8081/Courses`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const addedItem = response.data;
+      setData([...data, addedItem]);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error("Error adding new item: ", error);
+    }
+  };
 
   return (
     <>
@@ -40,9 +132,8 @@ const Elearningpage = () => {
           <Sidebar />
         </div>
         <div className="w-75">
-          <div>
-            <h2 className="text-center mb-2">E-Learning</h2>
-          </div>
+          <h2 className="text-center mb-2">E-Learning</h2>
+          <button className="btn btn-primary mb-2" onClick={handleShowAddModal}>Add New Skema</button>
           <div className="mt-2">
             {data.length > 0 ? (
               <table className="table">
@@ -51,26 +142,20 @@ const Elearningpage = () => {
                     <th>ID</th>
                     <th>Image</th>
                     <th>Nama Skema</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((user, index) => (
-                    <tr key={index}>
-                      <td>{user.id}</td>
+                  {data.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
                       <td>
-                        {user.img_url && (
-                          <img
-                            src={user.img_url}
-                            alt={user.nama_skema}
-                            width="50"
-                            height="auto"
-                          />
-                        )}
+                        {item.img_skema && <img src={item.img_skema} alt={item.nama_skema} width="50" height="50" />}
                       </td>
+                      <td>{item.nama_skema}</td>
                       <td>
-                        {typeof user.nama_skema === "object"
-                          ? JSON.stringify(user.nama_skema)
-                          : user.nama_skema}
+                        <button className="btn btn-warning mx-2" onClick={() => handleShowEditModal(item)}>Edit</button>
+                        <button className="btn btn-danger" onClick={() => handleShowDeleteModal(item)}>Delete</button>
                       </td>
                     </tr>
                   ))}
@@ -82,6 +167,26 @@ const Elearningpage = () => {
           </div>
         </div>
       </div>
+      <ConfirmDeleteModal
+        show={showDeleteModal}
+        handleClose={handleCloseDeleteModal}
+        handleConfirm={handleConfirmDelete}
+      />
+      {showEditModal && (
+        <EditCourse
+          show={showEditModal}
+          handleClose={handleCloseEditModal}
+          handleSubmit={handleEditSubmit}
+          item={itemToEdit}
+        />
+      )}
+      {showAddModal && (
+        <AddCourse
+          show={showAddModal}
+          handleClose={handleCloseAddModal}
+          handleSubmit={handleAddSubmit}
+        />
+      )}
     </>
   );
 };

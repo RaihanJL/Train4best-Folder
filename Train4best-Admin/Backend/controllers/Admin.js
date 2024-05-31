@@ -4,7 +4,6 @@ import Barang from "../models/Barang.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import fs from 'fs';
-import path from 'path';
 
 export const getAdmin = async(req, res) => {
     try{
@@ -60,54 +59,7 @@ export const deleteCatalogItem = async (req, res) => {
     }
   };
 
-  export const updateCatalogItem = async (req, res) => {
-    try {
-      const { id } = req.params;
-      console.log("Received update request for item ID: ", id);
-      console.log("Request body: ", req.body);
-  
-      const { nama_barang, kategori_barang, desc_barang, tahun_terbit, harga_barang } = req.body;
-      let img_barang = null;
-  
-      if (req.file && req.file.path) {
-        console.log("Image uploaded: ", req.file.path);
-        img_barang = fs.readFileSync(req.file.path);
-        fs.unlinkSync(req.file.path); // Hapus file setelah membacanya
-      }
-  
-      const updatedFields = {};
-      
-      if (nama_barang) {
-        updatedFields.nama_barang = nama_barang;
-      }
-      if (kategori_barang) {
-        updatedFields.kategori_barang = kategori_barang;
-      }
-      if (desc_barang) {
-        updatedFields.desc_barang = desc_barang;
-      }
-      if (tahun_terbit) {
-        updatedFields.tahun_terbit = tahun_terbit;
-      }
-      if (harga_barang) {
-        updatedFields.harga_barang = harga_barang;
-      }
-      if (img_barang) {
-        updatedFields.img_barang = img_barang;
-      }
-  
-      await Barang.update(updatedFields, { where: { id } });
-      res.status(200).json({ message: 'Item updated successfully' });
-    } catch (error) {
-      console.error("Error updating item: ", error);
-      res.status(500).json({ message: 'Error updating item', error: error.message });
-    }
-  };
-  
-  
-
-// Menambahkan barang baru
-export const createBarang = async (req, res) => {
+  export const createBarang = async (req, res) => {
     const { img_barang, nama_barang, kategori_barang, desc_barang, tahun_terbit, harga_barang } = req.body;
     try {
         const newBarang = await Barang.create({
@@ -122,6 +74,38 @@ export const createBarang = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error creating barang" });
+    }
+};
+
+export const updateCatalogItem = async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log("Received update request for item ID: ", id);
+      console.log("Request body: ", req.body);
+  
+      const { nama_barang, kategori_barang, desc_barang, tahun_terbit, harga_barang } = req.body;
+  
+      let updatedFields = { 
+        nama_barang,
+        kategori_barang,
+        desc_barang,
+        tahun_terbit,
+        harga_barang
+      };
+  
+      if (req.file && req.file.path) {
+        console.log("Image uploaded: ", req.file.path);
+        updatedFields.img_barang = fs.readFileSync(req.file.path);
+        fs.unlinkSync(req.file.path); 
+      }
+  
+      console.log("Updated fields: ", updatedFields);
+  
+      await Barang.update(updatedFields, { where: { id } });
+      res.status(200).json({ message: 'Item updated successfully' });
+    } catch (error) {
+      console.error("Error updating item: ", error);
+      res.status(500).json({ message: 'Error updating item', error: error.message });
     }
 };
 

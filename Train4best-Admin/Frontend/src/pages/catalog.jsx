@@ -4,11 +4,13 @@ import Sidebar from "../component/sidebar";
 import axios from "axios";
 import ConfirmDeleteModal from "../component/ConfirmationDelCat";
 import EditPopup from "../component/EditPopup";
+import AddPopup from "../component/AddPopup"; // Import AddPopup component
 
 const CatalogPage = () => {
   const [data, setData] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false); // State for showing AddPopup
   const [itemToDelete, setItemToDelete] = useState(null);
   const [itemToEdit, setItemToEdit] = useState(null);
 
@@ -26,7 +28,6 @@ const CatalogPage = () => {
       });
   }, []);
   
-
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8081/catalog/${id}`);
@@ -78,19 +79,74 @@ const CatalogPage = () => {
         formData.append('img_barang', updatedItem.img_barang); 
       }
   
-      await axios.put(`http://localhost:8081/catalog/${updatedItem.id}`, formData, {
+      console.log("Form data: ", formData);
+  
+      const response = await axios.put(`http://localhost:8081/catalog/${updatedItem.id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
   
-      const updatedData = data.map((item) => (item.id === updatedItem.id ? { ...item, ...updatedItem, img_url: updatedItem.img_barang ? URL.createObjectURL(updatedItem.img_barang) : item.img_url } : item));
+      console.log("API response: ", response.data);
+  
+      // Get the updated item from the response
+      const updatedItemFromResponse = response.data.item;
+      
+      const updatedData = data.map((item) => (
+        item.id === updatedItem.id ? { 
+          ...item, 
+          ...updatedItemFromResponse, 
+          img_url: updatedItem.img_barang ? URL.createObjectURL(updatedItem.img_barang) : item.img_url 
+        } : item
+      ));
       setData(updatedData);
       setShowEditModal(false);
     } catch (error) {
       console.error("Error updating item: ", error);
     }
-  };  
+  };
+
+  // Function to handle AddPopup
+  const handleShowAddModal = () => {
+    setShowAddModal(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+  };
+
+  const handleAddSubmit = async (newItem) => {
+    try {
+      console.log("Submitting new item: ", newItem);
+
+      const formData = new FormData();
+      formData.append('nama_barang', newItem.nama_barang);
+      formData.append('kategori_barang', newItem.kategori_barang);
+      formData.append('desc_barang', newItem.desc_barang);
+      formData.append('tahun_terbit', newItem.tahun_terbit);
+      formData.append('harga_barang', newItem.harga_barang);
+      if (newItem.img_barang) {
+        formData.append('img_barang', newItem.img_barang);
+      }
+
+      console.log("Form data: ", formData);
+
+      const response = await axios.post(`http://localhost:8081/catalog`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log("API response: ", response.data);
+
+      // Add the new item to the data state
+      const updatedData = [...data, response.data];
+      setData(updatedData);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error("Error adding new item: ", error);
+    }
+  };
 
   return (
     <>
@@ -104,6 +160,7 @@ const CatalogPage = () => {
         <div className="w-75">
           <h2 className="text-center mb-2">Catalog</h2>
           <div className="mt-2">
+            <button className="btn btn-primary mb-2" onClick={handleShowAddModal}>Add New Product</button> {/* Button to show AddPopup */}
             {data.length > 0 ? (
               <table className="table">
                 <thead className="table-header">
@@ -132,7 +189,7 @@ const CatalogPage = () => {
                       <td>{item.harga_barang}</td>
                       <td>
                         <button
-                          className="btn btn-warning"
+                          className="btn btn-warning mb-2"
                           onClick={() => handleShowEditModal(item)}
                         >
                           Edit
@@ -166,8 +223,15 @@ const CatalogPage = () => {
           handleSubmit={handleEditSubmit}
         />
       )}
+      {showAddModal && ( // Render AddPopup if showAddModal is true
+        <AddPopup
+          handleClose={handleCloseAddModal}
+          handleSubmit={handleAddSubmit}
+        />
+      )}
     </>
   );
 };
 
 export default CatalogPage;
+

@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import router from "./routes/index.js";
+import Courses from "./models/e-learning.js";
+import Course from "./models/Courses.js";
 
 dotenv.config();
 const app = express();
@@ -19,5 +21,6 @@ app.use(cors({ credentials: true, origin: "http://localhost:5174" }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(router);
+
 
 app.listen(8081, () => console.log("Server  running at port 8081"));

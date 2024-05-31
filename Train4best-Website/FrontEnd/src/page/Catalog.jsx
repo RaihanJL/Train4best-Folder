@@ -56,7 +56,7 @@ const CatalogPage = () => {
 
   const handleSelectCertification = (course) => {
     // Implementasi yang sesuai untuk menangani pemilihan sertifikasi
-    console.log("Selected course:", course);
+    console.log("Selected cours e:", course);
   };
 
   return (
